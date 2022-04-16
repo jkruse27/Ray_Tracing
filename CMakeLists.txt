@@ -5,15 +5,15 @@ cmake_minimum_required(VERSION 3.0)
 project(RayTracer)
 
 #
-#add_executable(Sirtet src/main.cpp)
+add_executable(save_image_test examples/save_image.cpp)
 
 # Especificar onde estao os header files
-#include_directories(includes/)
+include_directories(includes/)
 
 # Bibliotecas locais (estaticas)
-#dd_library(Sprites src/Model/Sprite.cpp)
+add_library(Imagem src/Imagem.cpp)
 
-#target_link_libraries(Sirtet Sprites)
+target_link_libraries(save_image_test Imagem)
 
 # Garantir que usaremos C++11 (ou superior, se preciso)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
