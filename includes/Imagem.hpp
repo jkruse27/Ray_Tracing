@@ -22,7 +22,7 @@ class Imagem{
 		*
 		* Recebe uma matriz correspondendo a imagem
 		*
-		* \param vector<vector<vector<int>>> matriz Matriz representando a imagem
+		* \param vector<vector<vector<int>>> matriz: Matriz representando a imagem
 		* \return Nada (este é um construtor!)
 		* */
         Imagem(vector<vector<vector<int>>> matriz);
@@ -46,7 +46,7 @@ class Imagem{
 		*
 		* Salva a imagem usando o formato PPM no caminho determinado.
 		*
-		* \param const char* arquivo Nome do arquivo para salvar a imagem
+		* \param const char* arquivo: Nome do arquivo para salvar a imagem
 		* \return Nada
 		* */
 		void salvar_imagem(const char* arquivo);
