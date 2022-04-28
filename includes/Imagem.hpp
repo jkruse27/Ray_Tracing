@@ -1,7 +1,10 @@
 #pragma once
+
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include "vec3.hpp"
+#include "color.hpp"
 
 using namespace std;
 
@@ -16,16 +19,27 @@ class Imagem{
 	private:
 		int altura; /*!< Altura da imagem (número de linhas)*/
         int largura; /*!< Largura da imagem (número de colunas)*/
-		vector<vector<vector<int>>> matriz; /*!< Matriz contendo a imagem*/
+		vector<vector<color>> matriz; /*!< Matriz contendo a imagem*/
 	public:
 		/*! \brief Construtor da Imagem
 		*
 		* Recebe uma matriz correspondendo a imagem
 		*
-		* \param vector<vector<vector<int>>> matriz: Matriz representando a imagem
+		* \param vector<vector<vector<color>>> matriz: Matriz representando a imagem
 		* \return Nada (este é um construtor!)
 		* */
-        Imagem(vector<vector<vector<int>>> matriz);
+        Imagem(int alt, int larg)
+			: altura(alt), largura(larg)
+		{};
+
+		/*! \brief Construtor da Imagem
+		*
+		* Recebe uma matriz correspondendo a imagem
+		*
+		* \param vector<vector<vector<color>>> matriz: Matriz representando a imagem
+		* \return Nada (este é um construtor!)
+		* */
+        Imagem(vector<vector<color>> matriz);
 
 		/*! \brief Construtor da Imagem
 		*
@@ -37,10 +51,10 @@ class Imagem{
 
         int get_altura();
 		int get_largura();
-        vector<vector<vector<int>>> get_matriz();
+        vector<vector<color>> get_matriz();
         void set_altura(int altura);
 		void set_largura(int largura);
-        void set_matriz(vector<vector<vector<int>>> matriz);        
+        void set_matriz(vector<vector<color>> matriz);        
 
 		/*! \brief Salva a imagem no caminho fornecido
 		*
