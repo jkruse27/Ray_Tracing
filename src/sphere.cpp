@@ -23,6 +23,8 @@ color Sphere::get_color(){
     return this->shape_color;
 }
 
-vec3 Sphere::normal(point3 point){
-    return (point - this->position) / this->radius;
+vec3 Sphere::normal(const ray& r, point3 point){
+    //vec3 normal = (point - this->position)/this->radius;
+    return (point - this->position)/this->radius;
+    //return dot(r.direction(), normal) < 0 ? (-1.0)*normal : normal;
 }

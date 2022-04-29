@@ -19,4 +19,8 @@ class Camera {
             : viewport_height(vp_height), viewport_width(vp_width), focal_length(focal_l), 
               origin(orig), vertical(vert), horizontal(hor), lower_left_corner(lll)
         {};
+
+        ray get_ray(double u, double v) {
+            return ray(origin, lower_left_corner + u*horizontal + v*vertical - origin);
+        }
 };
