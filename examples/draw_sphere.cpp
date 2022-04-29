@@ -35,7 +35,7 @@ int main() {
     // Criando objetos
     std::vector<std::shared_ptr<Shape>> objetos;
     std::shared_ptr<Shape> sphere_1(new Sphere(point3(0,0,-1), color(1,0,0), 0.5));
-    std::shared_ptr<Shape> sphere_2(new Sphere(point3(0,-101,-1), color(0,1,0.2), 100));
+    std::shared_ptr<Shape> sphere_2(new Sphere(point3(0,-100.5,-1), color(0,1,0.2), 100));
 
     objetos.push_back(sphere_1);
     objetos.push_back(sphere_2);
@@ -45,6 +45,6 @@ int main() {
 
     Renderer renderer;
 
-    std::shared_ptr<Imagem> generated_image = renderer.render(cena, 100, 0, infinity, 2);
+    std::shared_ptr<Imagem> generated_image = renderer.render(cena, 100, 0.001, infinity, 50);
     generated_image->salvar_imagem("exemplo_draw_sphere.ppm");
 }

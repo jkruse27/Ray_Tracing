@@ -51,9 +51,9 @@ color Renderer::ray_color(const ray& r, std::vector<std::shared_ptr<Shape>> obje
     if(any_hit){
         point3 p = r.at(min_t);
         vec3 n = closest_hit->normal(r, p);
-        point3 target = p + n;
+        point3 target = p + n + random_in_unit_sphere();
 
-        return 0.8*closest_hit->get_color() + 0.2*ray_color(ray(p, target - p), objects, t_min, t_max, depth-1);
+        return 0.3*closest_hit->get_color() + 0.7*ray_color(ray(p, target - p), objects, t_min, t_max, depth-1);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
