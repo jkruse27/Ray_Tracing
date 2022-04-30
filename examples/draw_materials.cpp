@@ -35,13 +35,19 @@ int main() {
 
     // Criando objetos
     std::shared_ptr<Material> material_1(new Opaque(color(1,0,0)));
-    std::shared_ptr<Material> material_2(new Opaque(color(0,1,0)));
+    std::shared_ptr<Material> material_2(new Metal(color(1,0,1), 0.1));
+    std::shared_ptr<Material> material_3(new Glass(color(1,1,0), 0.2));
+    std::shared_ptr<Material> material_4(new Opaque(color(0,1,0)));
     std::vector<std::shared_ptr<Shape>> objetos;
     std::shared_ptr<Shape> sphere_1(new Sphere(point3(0,0,-1), color(1,0,0), 0.5, material_1));
-    std::shared_ptr<Shape> sphere_2(new Sphere(point3(0,-100.5,-1), color(0,1,0.2), 100, material_2));
+    std::shared_ptr<Shape> sphere_2(new Sphere(point3(-1,0,-1), color(1,0,0), 0.5, material_2));
+    std::shared_ptr<Shape> sphere_3(new Sphere(point3(1,0,-1), color(1,0,0), 0.5, material_3));
+    std::shared_ptr<Shape> sphere_4(new Sphere(point3(0,-100.5,-1), color(0,1,0.2), 100, material_4));
 
     objetos.push_back(sphere_1);
     objetos.push_back(sphere_2);
+    objetos.push_back(sphere_3);
+    objetos.push_back(sphere_4);
 
     // Criando cena
     std::shared_ptr<Scene> cena(new Scene(camera, objetos, altura, largura));
@@ -49,5 +55,5 @@ int main() {
     Renderer renderer;
 
     std::shared_ptr<Imagem> generated_image = renderer.render(cena, 100, 0.001, infinity, 50);
-    generated_image->salvar_imagem("exemplo_draw_sphere.ppm");
+    generated_image->salvar_imagem("exemplo_draw_material.ppm");
 }

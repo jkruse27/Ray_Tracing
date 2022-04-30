@@ -7,6 +7,7 @@ project(RayTracer)
 #
 add_executable(save_image_test examples/save_image.cpp)
 add_executable(sphere_test examples/draw_sphere.cpp)
+add_executable(materials_test examples/draw_materials.cpp)
 
 # Especificar onde estao os header files
 include_directories(includes/)
@@ -15,6 +16,7 @@ include_directories(includes/)
 add_library(Imagem src/imagem.cpp)
 add_library(Renderer src/renderer.cpp)
 add_library(Sphere src/sphere.cpp)
+add_library(Materials src/material.cpp)
 
 # Exemplo de criacao de imagem
 target_link_libraries(save_image_test Imagem)
@@ -22,7 +24,14 @@ target_link_libraries(save_image_test Imagem)
 # Exemplo de geracao de imagem com circulo
 target_link_libraries(sphere_test Imagem)
 target_link_libraries(sphere_test Sphere)
+target_link_libraries(sphere_test Materials)
 target_link_libraries(sphere_test Renderer)
+
+# Exemplo de geracao de imagem com difrentes materiais
+target_link_libraries(materials_test Imagem)
+target_link_libraries(materials_test Sphere)
+target_link_libraries(materials_test Materials)
+target_link_libraries(materials_test Renderer)
 
 # Garantir que usaremos C++11 (ou superior, se preciso)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")

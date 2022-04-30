@@ -3,11 +3,13 @@
 #include "vec3.hpp"
 #include "ray.hpp"
 #include "color.hpp"
+#include "material.hpp"
 
 class Shape {
     public:
         point3 position;
         color shape_color;
+        shared_ptr<Material> obj_material;
     public:
         virtual double hit(const ray& r, float t_min, float t_max) = 0;
         virtual color get_color() = 0;
@@ -18,7 +20,7 @@ class Sphere : public Shape{
     public:
         double radius;
     public:
-        Sphere(point3 center, color col, double rad);
+        Sphere(point3 center, color col, double rad, shared_ptr<Material> m);
         double hit(const ray& r, float t_min, float t_max);
         color get_color();
         vec3 normal(const ray& r, point3 point);

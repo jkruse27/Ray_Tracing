@@ -1,9 +1,10 @@
 #include "shape.hpp"
 
-Sphere::Sphere(point3 center, color col, double rad){
+Sphere::Sphere(point3 center, color col, double rad, shared_ptr<Material> m){
     this->position = center;
     this->shape_color = col;
     this->radius = rad;
+    this->obj_material = m;
 }
 
 double Sphere::hit(const ray& r, float t_min, float t_max){

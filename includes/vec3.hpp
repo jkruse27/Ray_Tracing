@@ -143,3 +143,8 @@ inline vec3 random_in_unit_sphere() {
         return p;
     }
 }
+
+inline vec3 random_unit_vector() {
+    vec3 rand = vec3::random();
+    return rand/rand.length();
+}

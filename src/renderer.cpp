@@ -53,7 +53,12 @@ color Renderer::ray_color(const ray& r, std::vector<std::shared_ptr<Shape>> obje
         vec3 n = closest_hit->normal(r, p);
         point3 target = p + n + random_in_unit_sphere();
 
-        return 0.3*closest_hit->get_color() + 0.7*ray_color(ray(p, target - p), objects, t_min, t_max, depth-1);
+        ray scattered;
+        color attenuation;
+        if (closest_hit->obj_material->scatter(r, n, p, attenuation, scattered))
+            return attenuation * ray_color(scattered, objects, t_min, t_max, depth-1);
+            
+        return color(0,0,0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
