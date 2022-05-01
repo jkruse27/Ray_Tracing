@@ -1,7 +1,9 @@
 #include "renderer.hpp"
 #include <iostream>
 
-std::shared_ptr<Imagem> Renderer::render(std::shared_ptr<Scene> scene, int samples_per_pixel, float t_min, float t_max, int depth){
+std::shared_ptr<Imagem> Renderer::render(
+    std::shared_ptr<Scene> scene, int samples_per_pixel, float t_min, float t_max, int depth, bool log
+    ){
     auto height = scene->image_height;
     auto width = scene->image_width;
     auto camera = scene->camera;
@@ -24,6 +26,8 @@ std::shared_ptr<Imagem> Renderer::render(std::shared_ptr<Scene> scene, int sampl
             pixel_color /= samples_per_pixel;
             matrix[i][j] = pixel_color;
         }
+        if(log)
+            printProgress(j/height);
     }
 
     std::shared_ptr<Imagem> image (new Imagem(matrix));
@@ -41,6 +45,7 @@ color Renderer::ray_color(const ray& r, std::vector<std::shared_ptr<Shape>> obje
 
     for(std::shared_ptr<Shape> shape : objects){
         tmp = shape->hit(r, t_min, t_max);
+        
         if((tmp < min_t || !any_hit) && tmp >= 0){
             min_t = tmp;
             closest_hit = shape;

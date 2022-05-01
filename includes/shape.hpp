@@ -33,8 +33,15 @@ class Cube : public Shape{
         vec3 normal(const ray& r, point3 point);
 };
 
-class Polygon : public Shape{
+class Plane : public Shape{
     public:
+        vec3 u_dir;
+        vec3 v_dir;
+        vec3 n;
+        double u;
+        double v;
+    public:
+        Plane(point3 center, vec3 u_dir, vec3 v_dir, double u, double v, shared_ptr<Material> m);
         double hit(const ray& r, float t_min, float t_max);
         color get_color();  
         vec3 normal(const ray& r, point3 point);

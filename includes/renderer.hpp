@@ -12,6 +12,8 @@
 
 class Renderer {
     public:
-        std::shared_ptr<Imagem> render(std::shared_ptr<Scene> scene, int samples_per_pixel, float t_min, float t_max, int depth);
+        std::shared_ptr<Imagem> render(
+            std::shared_ptr<Scene> scene, int samples_per_pixel, float t_min, float t_max, int depth, bool log
+            );
         color ray_color(const ray& r, std::vector<std::shared_ptr<Shape>> objects, float t_min, float t_max, int depth);
 };

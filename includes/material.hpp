@@ -43,4 +43,7 @@ class Glass : public Material {
         bool scatter(
             const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered
         );
+    
+    private:
+        static double reflectance(double cosine, double ref_idx);
 };

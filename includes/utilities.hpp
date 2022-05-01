@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <cstdlib>
+#include <cstdio>
 
 // Usings
 
@@ -30,4 +31,15 @@ inline double random_double() {
 inline double random_double(double min, double max) {
     // Returns a random real in [min,max).
     return min + (max-min)*random_double();
+}
+
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
+
+inline void printProgress(double percentage) {
+    int val = (int) (percentage * 100);
+    int lpad = (int) (percentage * PBWIDTH);
+    int rpad = PBWIDTH - lpad;
+    std::printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
+    std::fflush(stdout);
 }
