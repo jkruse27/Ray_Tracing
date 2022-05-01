@@ -31,5 +31,5 @@ color Plane::get_color(){
 }
 
 vec3 Plane::normal(const ray& r, point3 point){
-    return this->n;
+    return dot(r.direction(), this->n) < 0 ? this->n : -1*this->n;
 }

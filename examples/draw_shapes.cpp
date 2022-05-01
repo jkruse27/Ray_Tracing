@@ -37,11 +37,11 @@ int main() {
     // Criando objetos
     std::shared_ptr<Material> material_1(new Opaque(color(1,0,0)));
     std::shared_ptr<Material> material_2(new Opaque(color(0,1,0)));
-    std::shared_ptr<Material> material_3(new Opaque(color(1,0,1)));
+    std::shared_ptr<Material> material_3(new Metal(color(0.8,0.8,0.8), 0));
     std::vector<std::shared_ptr<Shape>> objetos;
-    std::shared_ptr<Shape> sphere_1(new Sphere(point3(0,0,-1), color(1,0,0), 0.5, material_1));
+    std::shared_ptr<Shape> sphere_1(new Sphere(point3(0,0,-1), color(1,0,0), 0.3, material_1));
     std::shared_ptr<Shape> sphere_2(new Sphere(point3(0,-100.5,-1), color(0,1,0.2), 100, material_2));
-    std::shared_ptr<Shape> plane_1(new Plane(point3(0,0,-1), vec3(1,0,0), vec3(0,1,0), 1, 1, material_3));
+    std::shared_ptr<Shape> plane_1(new Plane(point3(-1,0,-2), vec3(-1,0,1), vec3(0,1,0), 2, 2, material_3));
     
     objetos.push_back(sphere_1);
     objetos.push_back(sphere_2);
