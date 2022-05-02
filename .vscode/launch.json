@@ -5,13 +5,13 @@
         "name": "cl.exe build and debug active file",
         "type": "cppvsdbg",
         "request": "launch",
-        "program": "$build/draw_sphere_example.exe",
+        "program": "C:/Users/joaog/Documents/Ray_Tracing_EA979_1S2022/build/from_file_test.exe",
         "args": [],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}",
         "environment": [],
         "externalConsole": false,
-        "preLaunchTask": "cl.exe build active file"
+        "preLaunchTask": ""
       }
     ]
   }

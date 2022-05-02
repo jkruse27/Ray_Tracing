@@ -26,10 +26,6 @@ double Plane::hit(const ray& r, float t_min, float t_max){
     return t;
 }
 
-color Plane::get_color(){
-    return this->shape_color;
-}
-
 vec3 Plane::normal(const ray& r, point3 point){
     return dot(r.direction(), this->n) < 0 ? this->n : -1*this->n;
 }

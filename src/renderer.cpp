@@ -8,21 +8,20 @@ std::shared_ptr<Imagem> Renderer::render(
     auto width = scene->image_width;
     auto camera = scene->camera;
 
-    vector<vector<color>> matrix(height, vector<color>(width));
+    vector<vector<color>> matrix(width, vector<color>(height));
 
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; ++i) {
             auto u = double(i) / (width-1);
             auto v = double(j) / (height-1);
             color pixel_color = color();
-            
+
             for(int k = 0; k < samples_per_pixel; k++)
                 pixel_color += ray_color(camera->get_ray(u+random_double()/(width-1), v+random_double()/(height-1)),
                                                          scene->objects,
                                                          t_min,
                                                          t_max,
                                                          depth);
-            
             pixel_color /= samples_per_pixel;
             matrix[i][j] = pixel_color;
         }
