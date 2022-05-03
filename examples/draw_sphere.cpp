@@ -11,10 +11,10 @@
 #include "material.hpp"
 
 int main() {
-    const float aspect_ratio = 16/9;
+    const float aspect_ratio = 16.0/9.0;
     const int largura = 400;
     const int altura = static_cast<int> (largura / aspect_ratio);
-
+    
     auto viewport_height = 2.0;
     auto viewport_width = aspect_ratio * viewport_height;
     auto focal_length = 1.0;
@@ -29,8 +29,8 @@ int main() {
                                               viewport_width,
                                               focal_length,
                                               origin,
-                                              horizontal,
                                               vertical,
+                                              horizontal,
                                               lower_left_corner));
 
     // Criando objetos

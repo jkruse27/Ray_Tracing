@@ -20,26 +20,31 @@ add_library(Renderer src/renderer.cpp)
 add_library(Sphere src/sphere.cpp)
 add_library(Plane src/plane.cpp)
 add_library(Materials src/material.cpp)
+add_library(Camera src/camera.cpp)
 add_library(Config src/config_reader.cpp)
 
 target_link_libraries(Config Sphere)
 target_link_libraries(Config Plane)
 target_link_libraries(Config Materials)
+target_link_libraries(Config Camera)
 
 # Exemplo de criacao de imagem
 target_link_libraries(save_image_test Imagem)
+target_link_libraries(save_image_test Camera)
 
 # Exemplo de geracao de imagem com circulo
 target_link_libraries(sphere_test Imagem)
 target_link_libraries(sphere_test Sphere)
 target_link_libraries(sphere_test Materials)
 target_link_libraries(sphere_test Renderer)
+target_link_libraries(sphere_test Camera)
 
 # Exemplo de geracao de imagem com difrentes materiais
 target_link_libraries(materials_test Imagem)
 target_link_libraries(materials_test Sphere)
 target_link_libraries(materials_test Materials)
 target_link_libraries(materials_test Renderer)
+target_link_libraries(materials_test Camera)
 
 # Exemplo de geracao de imagem com difrentes formas
 target_link_libraries(shapes_test Imagem)
@@ -47,6 +52,7 @@ target_link_libraries(shapes_test Sphere)
 target_link_libraries(shapes_test Plane)
 target_link_libraries(shapes_test Materials)
 target_link_libraries(shapes_test Renderer)
+target_link_libraries(shapes_test Camera)
 
 # Exemplo de geracao de imagem a partir de config
 target_link_libraries(from_file_test Imagem)
@@ -55,6 +61,7 @@ target_link_libraries(from_file_test Plane)
 target_link_libraries(from_file_test Materials)
 target_link_libraries(from_file_test Renderer)
 target_link_libraries(from_file_test Config)
+target_link_libraries(from_file_test Camera)
 
 # Garantir que usaremos C++11 (ou superior, se preciso)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")

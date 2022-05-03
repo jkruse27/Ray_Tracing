@@ -148,3 +148,29 @@ inline vec3 random_unit_vector() {
     vec3 rand = vec3::random();
     return rand/rand.length();
 }
+
+inline vec3 random_in_unit_disk(){
+    double u = random_double();
+    double x1 = random_double();
+    double x2 = random_double();
+    double x3 = random_double();
+
+    double mag = sqrt(x1*x1 + x2*x2 + x3*x3);
+
+    x1 /= mag; 
+    x2 /= mag; 
+    x3 /= mag;
+
+    // Math.cbrt is cube root
+    double c = cbrt(u);
+
+    return vec3(x1*c, x2*c, x3*c);
+}
+/*
+inline vec3 random_in_unit_disk() {
+    while (true) {
+        auto p = vec3(random_double(-1,1), random_double(-1,1), 0);
+        if (p.length_squared() >= 1) continue;
+        return p;
+    }
+}*/

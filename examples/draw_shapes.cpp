@@ -30,8 +30,8 @@ int main() {
                                               viewport_width,
                                               focal_length,
                                               origin,
-                                              horizontal,
                                               vertical,
+                                              horizontal,
                                               lower_left_corner));
 
     // Criando objetos

@@ -14,6 +14,13 @@
 #include "vec3.hpp"
 #include "color.hpp"
 
+typedef struct SceneParams {
+        std::shared_ptr<Scene> scene;
+        int samples_per_pixel;
+        int max_depth;
+        int log;
+} SceneParams;
+
 typedef struct Configs {
         float aspect_ratio;
         int largura;
@@ -21,14 +28,19 @@ typedef struct Configs {
         float viewport_height;
         float viewport_width;
         float focal_length;
+        float vfov;
+        float aperture;
+        float focus_dist;
         point3 origin;
+        point3 lookat;
         vec3 horizontal;
         vec3 vertical;
+        vec3 vup;
         point3 lower_left_corner;
         std::vector<std::shared_ptr<Shape>> objects;
 } Configs;
 
-std::shared_ptr<Scene> read_scene_from(const char* config_file);
+SceneParams read_scene_from(const char* config_file);
 int get_int(std::string text);
 float get_float(std::string text);
 double get_double(std::string text);

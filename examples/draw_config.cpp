@@ -14,11 +14,16 @@
 
 int main() {
     // Criando cena
-    std::shared_ptr<Scene> cena = read_scene_from("../examples/config.scene");
+    SceneParams params = read_scene_from("../examples/config.scene");
 
     Renderer renderer;
 
-    std::shared_ptr<Imagem> generated_image = renderer.render(cena, 500, 0.001, infinity, 50, true);
+    std::shared_ptr<Imagem> generated_image = renderer.render(  params.scene, 
+                                                                params.samples_per_pixel,
+                                                                0.001, 
+                                                                infinity, 
+                                                                params.max_depth, 
+                                                                params.log);
 
     generated_image->salvar_imagem("exemplo_draw_config.ppm");
 

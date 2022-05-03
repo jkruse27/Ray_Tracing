@@ -1,6 +1,6 @@
 #include "config_reader.hpp"
 
-std::shared_ptr<Scene> read_scene_from(const char* config_file){
+SceneParams read_scene_from(const char* config_file){
 	std::string text;
 	
 	std::fstream file(config_file, std::fstream::in);
@@ -9,6 +9,10 @@ std::shared_ptr<Scene> read_scene_from(const char* config_file){
     std::vector<std::shared_ptr<Shape>> objects;
 
     Configs config;
+    SceneParams ret;
+    ret.log = 0;
+    ret.max_depth = 50;
+    ret.samples_per_pixel = 500;
 
     config.aspect_ratio = 16/9;
     config.altura = 400;
@@ -17,19 +21,38 @@ std::shared_ptr<Scene> read_scene_from(const char* config_file){
     config.viewport_width = config.aspect_ratio * config.viewport_height;
     config.focal_length = 1.0;
 
-    config.origin = point3(0, 0, 0);
     config.horizontal = vec3(config.viewport_width, 0, 0);
     config.vertical = vec3(0, config.viewport_height, 0);
+    config.origin = point3(0, 0, 0);
+    config.lookat = point3(0,0,-1);
+    config.vup = vec3(0,0,-1);
+    config.vfov = 90;
+    config.focus_dist = (config.origin-config.lookat).length();
+    config.aperture = 2.0;
+
+    int camera_type = 0;
 
 	while(getline(file, text)){ 
 		if(text.size() == 0 || text.at(0) == '#')
 			continue;
+		else if(text.find("camera_type") != std::string::npos)
+			camera_type = get_int(text);
+		else if(text.find("aperture") != std::string::npos)
+			config.aperture = get_float(text);
+		else if(text.find("focus_dist") != std::string::npos)
+			config.focus_dist = get_float(text);
 		else if(text.find("aspect_ratio") != std::string::npos)
 			config.aspect_ratio = get_float(text);
 		else if(text.find("altura") != std::string::npos)
 			config.altura = get_int(text);
 		else if(text.find("largura") != std::string::npos)
 			config.largura = get_int(text);
+        else if(text.find("lookat") != std::string::npos)
+            config.lookat = get_vec3(text);
+        else if(text.find("vup") != std::string::npos)
+            config.vup = get_vec3(text);
+        else if(text.find("vfov") != std::string::npos)
+            config.vfov = get_float(text);
 		else if(text.find("viewport_height") != std::string::npos)
 			config.viewport_height = get_float(text);
 		else if(text.find("viewport_width") != std::string::npos)
@@ -46,21 +69,40 @@ std::shared_ptr<Scene> read_scene_from(const char* config_file){
 			objects.push_back(get_sphere(text));
         else if(text.find("plane") != std::string::npos)
 			objects.push_back(get_plane(text));
+        else if(text.find("max_depth") != std::string::npos)
+			ret.max_depth = get_int(text);
+        else if(text.find("samples_per_pixel") != std::string::npos)
+			ret.samples_per_pixel = get_int(text);
+        else if(text.find("log") != std::string::npos)
+			ret.log = get_int(text);
 	}
 
-    config.lower_left_corner = config.origin - config.horizontal/2 - config.vertical/2 - vec3(0, 0, config.focal_length);
+    std::shared_ptr<Camera> camera;
+    std::cout << config.aperture;
+    if(camera_type == 0){
+        config.lower_left_corner = config.origin - config.horizontal/2 - config.vertical/2 - vec3(0, 0, config.focal_length);
 
-    std::shared_ptr<Camera> camera(new Camera(config.viewport_height,
-                                              config.viewport_width,
-                                              config.focal_length,
-                                              config.origin,
-                                              config.horizontal,
-                                              config.vertical,
-                                              config.lower_left_corner));
+        camera = std::make_shared<Camera>(Camera(config.viewport_height,
+                                                 config.viewport_width,
+                                                 config.focal_length,
+                                                 config.origin,
+                                                 config.horizontal,
+                                                 config.vertical,
+                                                 config.lower_left_corner));
+    }else
+        camera = std::make_shared<Camera>(Camera(config.origin,
+                                                 config.lookat,
+                                                 config.vup,
+                                                 config.vfov,
+                                                 config.aspect_ratio,
+                                                 config.aperture,
+                                                 config.focus_dist
+                                                 ));
+                                    
+    std::shared_ptr<Scene> cena(new Scene(camera, objects, config.largura, config.altura));
+    ret.scene = cena;
 
-    std::shared_ptr<Scene> cena(new Scene(camera, objects, config.altura, config.largura));
-
-    return cena;
+    return ret;
 }
 
 int get_int(std::string text){

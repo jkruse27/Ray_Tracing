@@ -8,7 +8,7 @@ std::shared_ptr<Imagem> Renderer::render(
     auto width = scene->image_width;
     auto camera = scene->camera;
 
-    vector<vector<color>> matrix(width, vector<color>(height));
+    vector<vector<color>> matrix(height, vector<color>(width));
 
     for (int j = 0; j < height; j++) {
         for (int i = 0; i < width; ++i) {
@@ -23,7 +23,7 @@ std::shared_ptr<Imagem> Renderer::render(
                                                          t_max,
                                                          depth);
             pixel_color /= samples_per_pixel;
-            matrix[i][j] = pixel_color;
+            matrix[j][i] = pixel_color;
         }
         if(log)
             printProgress(j/height);
