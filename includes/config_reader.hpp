@@ -19,6 +19,7 @@ typedef struct SceneParams {
         int samples_per_pixel;
         int max_depth;
         int log;
+        std::string filename;
 } SceneParams;
 
 typedef struct Configs {

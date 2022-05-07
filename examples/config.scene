@@ -1,3 +1,5 @@
+filename = ../images/exemplo.ppm
+
 # Configurações da renderização
 camera_type = 1
 log = 1
@@ -19,11 +21,12 @@ vup = (0,1,0)
 vfov = 20
 horizontal = (3.6,0,0)
 vertical = (0,2,0)
-aperture = 0
-focal_dist = 1
+aperture = 2.0
+focus_dist = 5.2
 
 # Instanciação dos objetos na cena
 sphere = (0.0,-100.5,-1.0), 100.0, opaque((0.8, 0.8, 0.0))
 sphere = (0.0,0.0,-1.0), 0.5, opaque(0.1, 0.2, 0.5)
 sphere = (-1.0,0.0,-1.0), -0.45, glass((1,1,1), 1.5)
+sphere = (-1.0,0.0,-1.0), 0.5, glass((1,1,1), 1.5)
 sphere = (1.0,0.0,-1.0), 0.5, metal((0.8,0.6,0.2), 0.0)

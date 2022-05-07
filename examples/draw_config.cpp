@@ -15,7 +15,6 @@
 int main() {
     // Criando cena
     SceneParams params = read_scene_from("../examples/config.scene");
-
     Renderer renderer;
 
     std::shared_ptr<Imagem> generated_image = renderer.render(  params.scene, 
@@ -25,7 +24,7 @@ int main() {
                                                                 params.max_depth, 
                                                                 params.log);
 
-    generated_image->salvar_imagem("exemplo_draw_config.ppm");
-
+    generated_image->salvar_imagem(params.filename.c_str());
+    
     return 0;
 }

@@ -166,11 +166,3 @@ inline vec3 random_in_unit_disk(){
 
     return vec3(x1*c, x2*c, x3*c);
 }
-/*
-inline vec3 random_in_unit_disk() {
-    while (true) {
-        auto p = vec3(random_double(-1,1), random_double(-1,1), 0);
-        if (p.length_squared() >= 1) continue;
-        return p;
-    }
-}*/

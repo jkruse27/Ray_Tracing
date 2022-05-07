@@ -49,7 +49,7 @@ int main() {
     Renderer renderer;
 
     std::shared_ptr<Imagem> generated_image = renderer.render(cena, 100, 0.001, infinity, 50, true);
-    generated_image->salvar_imagem("exemplo_draw_sphere.ppm");
+    generated_image->salvar_imagem("../images/exemplo_draw_sphere.ppm");
     
     return 0;
 }

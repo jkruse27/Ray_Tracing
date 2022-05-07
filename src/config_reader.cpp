@@ -14,6 +14,7 @@ SceneParams read_scene_from(const char* config_file){
     ret.max_depth = 50;
     ret.samples_per_pixel = 500;
 
+    std::string filename = "../images/exemplo_draw_config.ppm";
     config.aspect_ratio = 16/9;
     config.altura = 400;
     config.largura = 710;
@@ -35,6 +36,8 @@ SceneParams read_scene_from(const char* config_file){
 	while(getline(file, text)){ 
 		if(text.size() == 0 || text.at(0) == '#')
 			continue;
+		else if(text.find("filename") != std::string::npos)
+			filename = get_string(text);
 		else if(text.find("camera_type") != std::string::npos)
 			camera_type = get_int(text);
 		else if(text.find("aperture") != std::string::npos)
@@ -78,7 +81,7 @@ SceneParams read_scene_from(const char* config_file){
 	}
 
     std::shared_ptr<Camera> camera;
-    std::cout << config.aperture;
+
     if(camera_type == 0){
         config.lower_left_corner = config.origin - config.horizontal/2 - config.vertical/2 - vec3(0, 0, config.focal_length);
 
@@ -98,9 +101,10 @@ SceneParams read_scene_from(const char* config_file){
                                                  config.aperture,
                                                  config.focus_dist
                                                  ));
-                                    
+
     std::shared_ptr<Scene> cena(new Scene(camera, objects, config.largura, config.altura));
     ret.scene = cena;
+    ret.filename = filename;
 
     return ret;
 }
@@ -159,8 +163,13 @@ color get_color(std::string text){
 }
 
 std::string get_string(std::string text){
-	std::size_t last_num = text.find_last_of(" ="); 
-	return text.substr(last_num+1, text.size()-last_num);
+    std::istringstream ss(text);
+    std::string name;
+    std::string trash = "";
+
+    ss  >> trash >> trash >> name;
+    
+    return name; 
 }
 
 std::shared_ptr<Sphere> get_sphere(std::string text){

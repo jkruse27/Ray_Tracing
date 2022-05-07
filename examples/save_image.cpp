@@ -22,7 +22,7 @@ int main() {
     }
 
     Imagem image = Imagem(matrix);
-    image.salvar_imagem("exemplo_save_image.ppm");
+    image.salvar_imagem("../images/exemplo_save_image.ppm");
     
     return 0;
 }
