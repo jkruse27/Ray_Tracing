@@ -70,6 +70,11 @@ Para a realização desse trabalho as seguintes etapas serão necessárias:
 ## Resultados Parciais
 Até o entregável 2, já foi implementado o código do ray tracer em C++, faltando para a conclusão do projeto apenas sua adaptação para que ele passe a usar CUDA também. Para a compilação dos códigos, foi utilizado o CMake, que gerará o Makefile automaticamente para nós. Além disso, para a geração de documentação automática está sendo usado o Doxygen, logo ele precisa ser instalado para que o CMake funcione. Com isso feito, basta criar uma pasta build no mesmo local onde está o CMakeFile.txt, e de dentro dela chamar o comando `cmake ../`, que gerará o arquivo que será usado para compilar o código, bastando usar o comando `make` para isso. Assim, teremos um conjunto de executáveis que foram criados para testar diversas funcionalidades, como a renderização de formas diferentes, de materiais diferentes, etc. Exemplos dessas imagens já foram salvos na pasta 'C++/images', e podem ser vistas abaixo. Para que não seja necessário recompilar o código sempre que desejemos renderizar uma cena diferente, foi criado também um arquivo de configuração no qual descrevemos a cena. Assim, o executável 'from_file_test' lê o arquivo 'config.scene' que precisa estar na pasta examples, e gera a imagem renderizada a partir dele.
 
+![alt text](./C++/images/exemplo_draw_sphere.png)
+![alt text](./C++/images/exemplo_draw_shapes.png)
+![alt text](./C++/images/exemplo_draw_material.png)
+![alt text](./C++/images/exemplo.png)
+
 ## Referências Bibliográficas
 [1] https://raytracing.github.io/books/RayTracingInOneWeekend.html  
 [2] https://developer.nvidia.com/blog/accelerated-ray-tracing-cuda/  
