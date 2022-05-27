@@ -4,5 +4,8 @@
 *.ptx
 *.cubin
 *.fatbin
-build/*
+*/build/*
 bin/*
+CUDA/build/*
+C++/build/*
+CUDA/build/.vs/*

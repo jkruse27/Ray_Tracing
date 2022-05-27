@@ -1,0 +1,12 @@
+aspect_ratio = 1.8
+altura = 400
+largura = 400
+viewport_height = 2
+viewport_width = 3.6
+focal_length = 1.0
+origin = (0,0,0)
+horizontal = (3.6,0,0)
+vertical = (0,2,0)
+sphere = (0,0,-1), 0.3, opaque((1,0,0))
+sphere = (0,-100.5,-1), 100, opaque((0,1,0))
+plane = (-1,0,-2), (-1,0,1), (0,1,0), 2, 2, metal((0.8,0.8,0.8), 0)

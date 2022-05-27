@@ -47,6 +47,12 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xutility": "cpp",
-        "algorithm": "cpp"
-    }
+        "algorithm": "cpp",
+        "cstdarg": "cpp",
+        "functional": "cpp",
+        "list": "cpp",
+        "unordered_map": "cpp",
+        "xhash": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "Enabled"
 }
