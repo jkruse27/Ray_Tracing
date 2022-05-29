@@ -8,13 +8,13 @@
 #include <limits>
 #include <memory>
 #include <cstdlib>
-#include <cstdio>
+//#include <cstdio>
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include <curand.h>
 #include <curand_kernel.h>
 #include <stdio.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 
 // Usings
 
@@ -28,7 +28,8 @@ using std::sqrt;
 
 inline __host__ void check_cuda(cudaError_t result, char const *const func, const char *const file, int const line) {
   if (result) {
-    // Make sure we call CUDA Device Reset before exiting
+    std::cerr << "CUDA error = " << cudaGetErrorString(result) << " at " <<
+    file << ":" << line << " '" << func << "' \n";
     cudaDeviceReset();
     exit(99);
   }
@@ -36,26 +37,26 @@ inline __host__ void check_cuda(cudaError_t result, char const *const func, cons
 
 inline __device__ void check_cuda_rand(curandStatus_t result, char const *const func, const char *const file, int const line) {
   if (result) {
-
+    printf("CUDA error = %u at %s: %d '%s'\n", static_cast<unsigned int>(result), file, line, func);
   }
 }
 
 // Constants
 
-const double infinity = std::numeric_limits<double>::infinity();
-const double pi = 3.1415926535897932385;
+const float infinity = std::numeric_limits<float>::infinity();
+const float pi = 3.1415926535897932385f;
 
 // Utility Functions
 
-__host__ inline double degrees_to_radians(double degrees) {
-    const double pi = 3.1415926535897932385;
-    return degrees * pi / 180.0;
+__host__ inline float degrees_to_radians(float degrees) {
+    const float pi = 3.1415926535897932385f;
+    return degrees * pi / 180.0f;
 }
 
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
 
-__host__ inline void printProgress(double percentage) {
+__host__ inline void printProgress(float percentage) {
     int val = (int) (percentage * 100);
     int lpad = (int) (percentage * PBWIDTH);
     int rpad = PBWIDTH - lpad;

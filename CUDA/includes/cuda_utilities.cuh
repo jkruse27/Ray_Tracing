@@ -1,6 +1,7 @@
 #include <vector>
 #include <memory>
 #include <cuda.h>
+#include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include "ray.cuh"
 #include "imagem.cuh"

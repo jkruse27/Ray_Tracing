@@ -1,6 +1,6 @@
 #include "shape.cuh"
 
-__host__ Plane::Plane(point3 center, vec3 u_dir, vec3 v_dir, double u, double v, Material* m){
+__host__ Plane::Plane(point3 center, vec3 u_dir, vec3 v_dir, float u, float v, Material* m){
     this->position = center;
     this->u_dir = u_dir;
     this->v_dir = v_dir;
@@ -10,18 +10,18 @@ __host__ Plane::Plane(point3 center, vec3 u_dir, vec3 v_dir, double u, double v,
     this->obj_material = m;
 }
 
-__device__ double Plane::hit(const ray& r, float t_min, float t_max){
-    double t = -dot(r.origin()-this->position, this->n)/dot(r.direction(), this->n);
+__device__ float Plane::hit(const ray& r, float t_min, float t_max){
+    float t = -dot(r.origin()-this->position, this->n)/dot(r.direction(), this->n);
     vec3 p = r.origin() + r.direction()*t;
 
-    double u = dot(this->u_dir, p-this->position);
-    double v = dot(this->v_dir, p-this->position);
+    float u = dot(this->u_dir, p-this->position);
+    float v = dot(this->v_dir, p-this->position);
     
     if(u > this->u/2 || u < -this->u/2 || v > this->v/2 || v < -this->v/2)
-        return -1.0;
+        return -1.0f;
 
     if(t > t_max || t < t_min)
-        return -1.0;
+        return -1.0f;
 
     return t;
 }

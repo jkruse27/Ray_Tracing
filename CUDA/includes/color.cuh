@@ -27,15 +27,15 @@ using std::fabs;
 class color {
     public:
         __host__ __device__ color() : e{0,0,0} {}
-        __host__ __device__ color(double e0, double e1, double e2) : e{e0, e1, e2} {}
+        __host__ __device__ color(float e0, float e1, float e2) : e{e0, e1, e2} {}
 
-        __host__ __device__ double r() const { return e[0]; }
-        __host__ __device__ double g() const { return e[1]; }
-        __host__ __device__ double b() const { return e[2]; }
+        __host__ __device__ float r() const { return e[0]; }
+        __host__ __device__ float g() const { return e[1]; }
+        __host__ __device__ float b() const { return e[2]; }
 
         __host__ __device__ color operator-() const { return color(-e[0], -e[1], -e[2]); }
-        __host__ __device__ double operator[](int i) const { return e[i]; }
-        __host__ __device__ double& operator[](int i) { return e[i]; }
+        __host__ __device__ float operator[](int i) const { return e[i]; }
+        __host__ __device__ float& operator[](int i) { return e[i]; }
 
         __host__ __device__ color& operator+=(const color &v) {
             e[0] += v.e[0];
@@ -44,22 +44,29 @@ class color {
             return *this;
         }
 
-        __host__ __device__ color& operator*=(const double t) {
+        __host__ __device__ color& operator*=(const float t) {
             e[0] *= t;
             e[1] *= t;
             e[2] *= t;
             return *this;
         }
 
-       __host__ __device__ color& operator/=(const double t) {
+        __host__ __device__ color& operator*=(const color &t) {
+            e[0] *= t[0];
+            e[1] *= t[1];
+            e[2] *= t[2];
+            return *this;
+        }
+
+       __host__ __device__ color& operator/=(const float t) {
             return *this *= 1/t;
         }
 
-        __host__ __device__ double length() const {
+        __host__ __device__ float length() const {
             return sqrt(length_squared());
         }
 
-        __host__ __device__ double length_squared() const {
+        __host__ __device__ float length_squared() const {
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
 
@@ -67,15 +74,15 @@ class color {
             std::stringstream ss;
 
             // Write the translated [0,255] value of each color component.
-            ss << static_cast<int>(255.999 * this->r()) << ' '
-                << static_cast<int>(255.999 * this->g()) << ' '
-                << static_cast<int>(255.999 * this->b());
+            ss << static_cast<int>(255.999f * this->r()) << ' '
+                << static_cast<int>(255.999f * this->g()) << ' '
+                << static_cast<int>(255.999f * this->b());
 
             std::string s = ss.str();
             return s;
 }
     public:
-        double e[3];
+        float e[3];
 };
 
 // color Utility Functions
@@ -96,19 +103,19 @@ __host__ __device__ inline color operator*(const color &u, const color &v) {
     return color(u.e[0] * v.e[0], u.e[1] * v.e[1], u.e[2] * v.e[2]);
 }
 
-__host__ __device__ inline color operator*(double t, const color &v) {
+__host__ __device__ inline color operator*(float t, const color &v) {
     return color(t*v.e[0], t*v.e[1], t*v.e[2]);
 }
 
-__host__ __device__ inline color operator*(const color &v, double t) {
+__host__ __device__ inline color operator*(const color &v, float t) {
     return t * v;
 }
 
-__host__ __device__ inline color operator/(color v, double t) {
+__host__ __device__ inline color operator/(color v, float t) {
     return (1/t) * v;
 }
 
-__host__ __device__ inline double dot(const color &u, const color &v) {
+__host__ __device__ inline float dot(const color &u, const color &v) {
     return u.e[0] * v.e[0]
          + u.e[1] * v.e[1]
          + u.e[2] * v.e[2];

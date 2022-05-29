@@ -1,8 +1,8 @@
 #include "camera.cuh"
 
-__host__ Camera::Camera( double vp_height, 
-                double vp_width,
-                double focal_l,
+__host__ Camera::Camera( float vp_height, 
+                float vp_width,
+                float focal_l,
                 point3 orig,
                 point3 vert,
                 point3 hor,
@@ -20,14 +20,14 @@ __host__ Camera::Camera( double vp_height,
 __host__ Camera::Camera(point3 origin, 
                point3 lookat,
                vec3 vup,
-               double vfov,
-               double aspect_ratio,
-               double aperture,
-               double focus_dist)
+               float vfov,
+               float aspect_ratio,
+               float aperture,
+               float focus_dist)
     {
     auto theta = degrees_to_radians(vfov);
     auto h = tan(theta/2);
-    this->viewport_height = 2.0 * h;
+    this->viewport_height = 2.0f * h;
     this->viewport_width = aspect_ratio * viewport_height;
     this->aperture = aperture;
     this->focus_dist = focus_dist;
@@ -42,7 +42,7 @@ __host__ Camera::Camera(point3 origin,
     this->lower_left_corner = origin - horizontal/2 - vertical/2 - (focus_dist* this->w);
 }
 
-__device__ ray Camera::get_ray(double x1, double x2, curandState *curand_States) {
+__device__ ray Camera::get_ray(float x1, float x2, curandState *curand_States) {
     auto rd = (this->aperture/2) * random_in_unit_disk(curand_States);
     vec3 offset = this->u * rd.x() + this->v * rd.y();
     return ray(

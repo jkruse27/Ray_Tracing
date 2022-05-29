@@ -36,8 +36,8 @@ __device__ color ray_color(const ray& r, Shape** objects, int n_obj, float t_min
     }
 
     vec3 unit_direction = unit_vector(r.direction());
-    auto t = 0.5*(unit_direction.y() + 1.0);
-    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+    auto t = 0.5f*(unit_direction.y() + 1.0f);
+    return (1.0f-t)*color(1.0f, 1.0f, 1.0f) + t*color(0.5f, 0.7f, 1.0f);
 }
 
 __global__ void fill_colors(
@@ -48,13 +48,13 @@ __global__ void fill_colors(
 
     for (int j = threadIdx.y + blockIdx.y * blockDim.y; j < height; j++) {
         for (int i = threadIdx.x + blockIdx.x * blockDim.x; i < width; ++i) {
-            auto u = double(i) / (width-1);
-            auto v = double(j) / (height-1);
+            auto u = float(i) / (width-1);
+            auto v = float(j) / (height-1);
             color pixel_color = color();
 
             for(int k = 0; k < samples_per_pixel; k++){
-                pixel_color += ray_color(camera->get_ray(u+curand_uniform_double(&curand_States)/(width-1), 
-                                                         v+curand_uniform_double(&curand_States)/(height-1),
+                pixel_color += ray_color(camera->get_ray(u+curand_uniform_float(&curand_States)/(width-1), 
+                                                         v+curand_uniform_float(&curand_States)/(height-1),
                                                          &curand_States),
                                          objects,
                                          n_objs,
