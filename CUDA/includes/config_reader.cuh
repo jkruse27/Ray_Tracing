@@ -21,8 +21,8 @@ typedef struct SceneParams {
         int samples_per_pixel;
         int max_depth;
         int log;
-        int t_min;
-        int t_max;
+        float t_min;
+        float t_max;
         int TX;
         int TY;
         int width;
@@ -100,7 +100,7 @@ __host__ inline SceneParams read_scene_from(const char* config_file){
     ret.log = 0;
     ret.max_depth = 50;
     ret.samples_per_pixel = 500;
-    ret.t_min = 0;
+    ret.t_min = 0.001;
     ret.t_max = infinity;
 
     std::string filename = "../images/exemplo_draw_config.ppm";

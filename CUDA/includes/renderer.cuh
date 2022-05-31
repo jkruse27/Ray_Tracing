@@ -36,7 +36,7 @@ __device__ color ray_color(const ray& r, SceneParams *params, curandState curand
         closest_hit = nullptr;
 
         for(int i = 0; i < (*params->scene)->n_obj; i++){
-            shape = (*(params->scene))->objects[i];
+            shape = (*params->scene)->objects[i]; 
             tmp = shape->hit(cur_ray, params->t_min, params->t_max);
 
             if((tmp < min_t || !any_hit) && tmp >= 0){
