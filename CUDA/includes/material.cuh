@@ -19,7 +19,7 @@ class Material {
 
 class Opaque : public Material {
     public:
-        Opaque(color alb);
+        __device__ Opaque(color alb);
 
         __device__ bool scatter(
             const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered, curandState *curand_States
@@ -30,7 +30,7 @@ class Metal : public Material {
     public:
         float fuzz;
     public:
-        Metal(color alb, float f);
+        __device__ Metal(color alb, float f);
 
         __device__ bool scatter(
             const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered, curandState *curand_States
@@ -41,7 +41,7 @@ class Glass : public Material {
     public:
         float ir;
     public:
-        Glass(color alb, float ir);
+        __device__ Glass(color alb, float ir);
 
         __device__ bool scatter(
             const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered, curandState *curand_States
@@ -59,16 +59,16 @@ class Glass : public Material {
 
 
 
-__host__ inline Opaque::Opaque(color alb){
+__device__ inline Opaque::Opaque(color alb){
     this->albedo = alb;
 }
 
-__host__ inline Metal::Metal(color alb, float f){
+__device__ inline Metal::Metal(color alb, float f){
     this->albedo = alb;
     this->fuzz = f;
 }
 
-__host__ inline Glass::Glass(color alb, float ir){
+__device__ inline Glass::Glass(color alb, float ir){
     this->albedo = alb;
     this->ir = ir;
 }

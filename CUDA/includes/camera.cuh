@@ -18,8 +18,8 @@ class Camera {
         vec3 u, v, w;
     
     public:
-        Camera(float vp_height, float vp_width, float focal_l, point3 orig, point3 vert, point3 hor, point3 lll);
-        Camera(point3 origin, point3 lookat, vec3 vup, float vfov, float aspect_ratio, float aperture, float focus_dist);
+        __device__ Camera(float vp_height, float vp_width, float focal_l, point3 orig, point3 vert, point3 hor, point3 lll);
+        __device__ Camera(point3 origin, point3 lookat, vec3 vup, float vfov, float aspect_ratio, float aperture, float focus_dist);
         __device__ ray get_ray(float x1, float x2, curandState *curand_States);
 };
 
@@ -30,7 +30,7 @@ class Camera {
 
 
 
-__host__ inline Camera::Camera( float vp_height, 
+__device__ inline Camera::Camera( float vp_height, 
                 float vp_width,
                 float focal_l,
                 point3 orig,
@@ -47,7 +47,7 @@ __host__ inline Camera::Camera( float vp_height,
     this->lower_left_corner = lll;
 }
 
-__host__ inline Camera::Camera(point3 origin, 
+__device__ inline Camera::Camera(point3 origin, 
                point3 lookat,
                vec3 vup,
                float vfov,

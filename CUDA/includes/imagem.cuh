@@ -119,7 +119,7 @@ __host__ inline void Imagem::salvar_imagem(const char* arquivo){
 
     for (int i = 0; i < this->altura; i++) {
         for (int j = 0; j < this->largura; j++) {
-            myFile << this->matriz[(this->altura-i-1)*this->altura+j].color_text() << ' ';
+            myFile << this->matriz[(this->altura-i-1)*this->largura+j].color_text() << ' ';
         }
         myFile << '\n';
     }

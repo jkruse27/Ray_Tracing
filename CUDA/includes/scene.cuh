@@ -16,12 +16,12 @@ class Scene{
         int image_width, image_height;
     
     public:
-        Scene(){};
-        Scene(Camera* cam, Shape **shapes, int n_objects, int width, int height)
+        __device__ Scene(){};
+        __device__ Scene(Camera* cam, Shape **shapes, int n_objects, int width, int height)
             : camera(cam), objects(shapes), n_obj(n_objects), image_width(width), image_height(height) 
         {}
 
-        ~Scene(){
+        __device__ ~Scene(){
             checkCudaErrors(cudaFree(this->camera));
             for(int i = 0; i < n_obj; i++){
                 checkCudaErrors(cudaFree(objects[i]->obj_material));

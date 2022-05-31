@@ -41,6 +41,16 @@ inline __device__ void check_cuda_rand(curandStatus_t result, char const *const 
   }
 }
 
+inline __host__ void check_and_wait(){
+    cudaError_t err = cudaGetLastError();        // Get error code
+    if ( err != cudaSuccess )
+    {
+      std::cout << "CUDA Error: " << cudaGetErrorString(err) << std::endl;
+      exit(-1);
+    }
+
+    checkCudaErrors(cudaDeviceSynchronize());
+}
 // Constants
 
 const float infinity = std::numeric_limits<float>::infinity();

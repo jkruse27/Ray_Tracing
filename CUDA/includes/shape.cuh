@@ -21,7 +21,7 @@ class Sphere : public Shape{
     public:
         float radius;
     public:
-        __host__ Sphere(point3 center, float rad, Material* m);
+        __device__ Sphere(point3 center, float rad, Material* m);
         __device__ float hit(const ray& r, float t_min, float t_max);
         __device__ vec3 normal(const ray& r, point3 point);
 };
@@ -40,7 +40,7 @@ class Plane : public Shape{
         float u;
         float v;
     public:
-        __host__ Plane(point3 center, vec3 u_dir, vec3 v_dir, float u, float v, Material* m);
+        __device__ Plane(point3 center, vec3 u_dir, vec3 v_dir, float u, float v, Material* m);
         __device__ float hit(const ray& r, float t_min, float t_max);
         __device__ vec3 normal(const ray& r, point3 point);
 };
@@ -50,7 +50,7 @@ class Plane : public Shape{
 
 
 
-__host__ inline Sphere::Sphere(point3 center, float rad, Material* m){
+__device__ inline Sphere::Sphere(point3 center, float rad, Material* m){
     this->position = center;
     this->radius = rad;
     this->obj_material = m;
@@ -79,7 +79,7 @@ __device__ inline vec3 Sphere::normal(const ray& r, point3 point){
     return (point - this->position)/this->radius;
 }
 
-__host__ inline Plane::Plane(point3 center, vec3 u_dir, vec3 v_dir, float u, float v, Material* m){
+__device__ inline Plane::Plane(point3 center, vec3 u_dir, vec3 v_dir, float u, float v, Material* m){
     this->position = center;
     this->u_dir = u_dir;
     this->v_dir = v_dir;

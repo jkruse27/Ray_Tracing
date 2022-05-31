@@ -18,6 +18,6 @@
 class Renderer {
     public:
         std::shared_ptr<Imagem> render(
-            Scene* scene, int samples_per_pixel, float t_min, float t_max, int depth, bool log
+            Scene** scene, int height, int width, int samples_per_pixel, float t_min, float t_max, int depth, bool log
             );
 };
