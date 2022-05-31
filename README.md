@@ -79,6 +79,6 @@ Até o entregável 2, já foi implementado o código do ray tracer em C++, falta
 [1] https://raytracing.github.io/books/RayTracingInOneWeekend.html  
 [2] https://developer.nvidia.com/blog/accelerated-ray-tracing-cuda/  
 [3] Pitkin, Thomas A.. “GPU ray tracing with CUDA.” (2013).  
-[4] https://docs.nvidia.com/cuda/index.html
-[5] https://raytracing.github.io/books/RayTracingTheNextWeek.html
-[6] https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html
+[4] https://docs.nvidia.com/cuda/index.html  
+[5] https://raytracing.github.io/books/RayTracingTheNextWeek.html  
+[6] https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html  

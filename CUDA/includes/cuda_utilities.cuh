@@ -11,9 +11,6 @@
 #include "scene.cuh"
 #include "utilities.cuh"
 #include "vec3.cuh"
-//#include "cuda_parameters.cuh"
-//#include "cuda_runtime.h"
-//#include "device_launch_parameters.h"
 
 __device__ color ray_color(const ray& r, Shape** objects, int n_obj, float t_min, float t_max, int depth, curandState curand_St);
 

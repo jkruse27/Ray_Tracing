@@ -7,7 +7,6 @@
 #include "device_launch_parameters.h"
 #include "vec3.cuh"
 #include "color.cuh"
-#include "cuda_parameters.cuh"
 
 using namespace std;
 

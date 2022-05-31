@@ -113,8 +113,7 @@ __global__ void setup_kernel(int width, int height, curandState *state)
     int i = threadIdx.x + blockIdx.x * blockDim.x;
 
     if((i >= width) || (j >= height)) return;
-    /* Each thread gets same seed, a different sequence
-       number, no offset */
+
     curand_init(1234, id, 0, &state[j*width+i]);
 }
 
@@ -202,7 +201,7 @@ int main() {
     const int largura = 100;
     const int altura = static_cast<int> (largura / aspect_ratio);
 
-    std::shared_ptr<Imagem> generated_image = renderer.render(cena, altura, largura, 100, (float) 0.001, infinity, 50, true);
+    std::shared_ptr<Imagem> generated_image = renderer.render(cena, altura, largura, 100, 0.001f, infinity, 50, true);
     std::cout << "Finalizei!" << std::endl;
     generated_image->salvar_imagem("../images/exemplo_draw_sphere.ppm");
  

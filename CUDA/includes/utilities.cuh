@@ -22,6 +22,14 @@ using std::shared_ptr;
 using std::make_shared;
 using std::sqrt;
 
+// Constants
+
+const float infinity = std::numeric_limits<float>::infinity();
+const float pi = 3.1415926535897932385f;
+
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
+
 #define checkCudaErrors(val) check_cuda( (val), #val, __FILE__, __LINE__ )
 
 #define checkCudaRandErrors(val) check_cuda_rand( (val), #val, __FILE__, __LINE__ )
@@ -51,20 +59,13 @@ inline __host__ void check_and_wait(){
 
     checkCudaErrors(cudaDeviceSynchronize());
 }
-// Constants
-
-const float infinity = std::numeric_limits<float>::infinity();
-const float pi = 3.1415926535897932385f;
 
 // Utility Functions
 
-__host__ inline float degrees_to_radians(float degrees) {
+__device__ inline float degrees_to_radians(float degrees) {
     const float pi = 3.1415926535897932385f;
     return degrees * pi / 180.0f;
 }
-
-#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
-#define PBWIDTH 60
 
 __host__ inline void printProgress(float percentage) {
     int val = (int) (percentage * 100);

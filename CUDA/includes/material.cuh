@@ -8,6 +8,12 @@
 #include "color.cuh"
 #include "material.cuh"
 
+typedef enum MATERIALS {
+    OPAQUE,
+    METAL,
+    GLASS
+} MATERIALS;
+
 class Material {
     public:
         color albedo;
@@ -50,14 +56,6 @@ class Glass : public Material {
     private:
         __device__ static float reflectance(float cosine, float ref_idx);
 };
-
-
-
-
-
-
-
-
 
 __device__ inline Opaque::Opaque(color alb){
     this->albedo = alb;
