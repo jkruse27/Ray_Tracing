@@ -1,15 +1,15 @@
-filename = ../images/exemplo.ppm
+filename = ../../images/exemplo.ppm
 
 # Configurações da renderização
 camera_type = 1
-log = 1
+log = 0
 max_depth = 50
-samples_per_pixel = 100
+samples_per_pixel = 500
 
 # Formato e resolução da imagem
 aspect_ratio = 1.8
-altura = 222
-largura = 400
+altura = 1080
+largura = 1920
 viewport_height = 2
 viewport_width = 3.6
 

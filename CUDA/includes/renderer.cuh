@@ -128,6 +128,5 @@ __host__ std::shared_ptr<Imagem> Renderer::render(SceneParams params){
     
     std::shared_ptr<Imagem> image (new Imagem(matrix, params.height, params.width));
     checkCudaErrors(cudaFree(curand_States));
-
     return image;
 }
