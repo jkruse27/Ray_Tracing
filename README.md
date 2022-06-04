@@ -3,70 +3,112 @@
 
 ## Apresentação
 
-O presente projeto foi originado no contexto das atividades da disciplina de pós-graduação *EA979A - Introdução a Computação Gráfica e Processamento de Imagens*, 
-oferecida no primeiro semestre de 2022, na Unicamp, sob supervisão da Profa. Dra. Paula Dornhofer Paro Costa, do Departamento de Engenharia de Computação e Automação (DCA) da Faculdade de Engenharia Elétrica e de Computação (FEEC).
+O presente projeto foi originado no contexto das atividades da disciplina de graduação *EA979A - Introdução a Computação Gráfica e Processamento de Imagens*, oferecida no primeiro semestre de 2022, na Unicamp, sob supervisão da Profa. Dra. Paula Dornhofer Paro Costa, do Departamento de Engenharia de Computação e Automação (DCA) da Faculdade de Engenharia Elétrica e de Computação (FEEC).
 
 > |Nome  | RA | Curso|
 > |--|--|--|
 > | João Gabriel Segato Kruse  | 218615  | Eng. de Computação|
 
 
-## Descrição do Projeto
-Ray Tracing é uma técnica de computação gráfica que simula o trajeto de raios de luz para a renderização de imagens e é muito utilizada em uma variedade de algoritmos. Embora essa técnica consiga gerar imagens de muito boa qualidade, seu custo computacional é muito alto, necessitando de formas de otimizar sua execução. Uma das formas de fazer isso é através de APIs como a Nvidia CUDA, que foi projetada para a execução de códigos em paralelo e assim pode gerar uma grande aceleração desse processo. Assim, esse projeto tem como principal objetivo a implementação de um ray tracer com funcionalidades básicas utilizando CUDA e a posterior comparação de sua performance e imagens geradas com um ray tracer implementado usando apenas C++. Com isso, o projeto será composto das seguintes tarefas:
+## 1. Descrição do Projeto
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ray Tracing é uma técnica de computação gráfica que simula o trajeto de raios de luz para a renderização de imagens e é muito utilizada em uma variedade de algoritmos. Embora essa técnica consiga gerar imagens de muito boa qualidade, seu custo computacional é muito alto, necessitando de formas de otimizar sua execução. Uma das formas de fazer isso é através de APIs como a Nvidia CUDA, que foi projetada para a execução de códigos em paralelo e assim pode gerar uma grande aceleração desse processo. Assim, esse projeto tem como principal objetivo a implementação de um ray tracer com funcionalidades básicas utilizando CUDA e a posterior comparação de sua performance e imagens geradas com um ray tracer implementado usando apenas C++. Com isso, o projeto será composto das seguintes tarefas:
 * Implementação de uma versão de ray tracer base em C++
 * Implementação de uma versão de ray tracer usando CUDA para acelerar algumas das etapas
 * Comparação da performance entre as implementações
 
-### Ray Tracing
-Ray Tracing é um dos métodos que podem ser usados em técnicas de renderização, e ele acaba tendo um trade-off de imagens com maior qualidade, mas com um custo computacional muito maior. Assim, essa técnica geralmente era mais utilizada para renderizações em filmes e imagens, que não exigiam uma excecução muita rápida, mas para outras mídias como jogos, nas quais a taxa de quadros por segundo gerados dinâmicamente é essencial, outros métodos precisavam ser aplicados. Esse maior custo inerente ao Ray Tracing vem do fato dele traçar o caminho de um feixe imaginário indo de um ponto de foco e passando por cada pixel da imagem e calculando a cor visível por ele. Assim, temos a capacidade de simular efeitos óticos como a reflexão, refração, dispersão, além de outros efeitos mais complexos como motion blur, depth of field, etc. Recentemente, uma nova linha de placas lançada pela Nvidia trouxe acelerações em hardware para tarefas relacionadas a Ray Tracing, possibilitando agora seu uso em aplicações mais dinâmicas como jogos.  
-Em traços gerais, o que o algoritmo faz é simular um raio saindo de um ponto de foco e um pixel até alguma superfície que bloqueie seu caminho, o que dará sua cor. Vale notar que cada superfície possui características próprias, podendo refletir, refratar, dispersar, etc o raio chegando nela, e isso precisa ser levado em conta também. Realizando essa simulação para um conjunto suficientemente grande de raios passando por todos os pixels da imagem e posteriormente usando outros métodos de processamento de imagem para remover possíveis artefatos e aliasing, chegamos em uma imagem final renderizada.
+## 2. Ray Tracing
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ray Tracing é um dos métodos que podem ser usados em técnicas de renderização, e ele acaba tendo um trade-off de imagens com maior qualidade, mas com um custo computacional muito maior. Assim, essa técnica geralmente era mais utilizada para renderizações em filmes e imagens, que não exigiam uma excecução muita rápida, mas para outras mídias como jogos, nas quais a taxa de quadros por segundo gerados dinâmicamente é essencial, outros métodos precisavam ser aplicados. Quando estamos renderizando uma imagem, o que nós estamos buscando na verdade é uma projeção da nossa cena 3D em um plano 2D, o que pode ser feito de diversas maneiras dependendo da técnica empregada.
+![image](images/formando_imagem.png)
+<figcaption align = "center"><b>Fig.1 - Projeção da Cena em um plano</b></figcaption>
 
-### CUDA
-Ray Tracing é uma técnica que permite paralelização de algumas de suas etapas, o que justifica o uso de linguagens e plataformas que possibilitem isso. CPUs são especialmente boas em processamentos sequenciais de dados, se especializando nisso com sua arquitetura, datapath e hierarquia de cache, mas para tarefas paralelizadas elas acabam não sendo ideais (elas possuem otimização na performance single-thread). Para esse tipo de projeto, GPUs podem ser mais apropriadas por seus designs e arquiteturas serem mais adaptados justamente a processamentos paralelos com seus milhares de "cores". Assim, foram desenvolvidas plataformas focadas no deselvolvimento de aplicações que usem a GPU, como é o exemplo da CUDA da Nvidia. CUDA é uma plataforma de computação paralela e modelo de programação criado para utilizar esse poder das "Unidades de Processamento Gráfico" e será usado nesse projeto com o objetivo de tentar acelerar o Ray Tracer.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quando trabalhamos com Ray Tracing, o maior custo computacional inerente à técnica vem justamente do fato dele, para fazer essa projeção, traçar o caminho de um feixe imaginário partindo de um ponto de foco e passando por cada pixel da imagem e calculando a cor visível por ele. Assim, é necessário simular efeitos óticos como a reflexão, refração, dispersão, além de outros efeitos mais complexos como motion blur, depth of field, etc. A vantagem desse método é que, por conta de todos esses efeitos estarem sendo levados em conta para a obtenção da imagem, ela acaba podendo ser mais realista. 
 
-### Comparação
+ ![image](images/raio_no_pixel.png)
+<figcaption align = "center"><b>Fig.2 - Exemplo de raio</b></figcaption>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recentemente, uma nova linha de placas lançada pela Nvidia trouxe acelerações em hardware para tarefas relacionadas a Ray Tracing, possibilitando agora seu uso em aplicações mais dinâmicas como jogos.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Em traços gerais, o que o algoritmo faz é simular um raio saindo de um ponto de foco e um pixel até alguma superfície que bloqueie seu caminho, o que dará sua cor. Vale notar que cada superfície possui características próprias, podendo refletir, refratar, dispersar, etc o raio chegando nela, e isso precisa ser levado em conta também. Realizando essa simulação para um conjunto suficientemente grande de raios passando por todos os pixels da imagem e posteriormente usando outros métodos de processamento de imagem para remover possíveis artefatos e aliasing, chegamos em uma imagem final renderizada.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agora vamos entrar em mais detalhes de cada etapa para a implentação de um Ray Tracer. 
+
+### Câmera
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;É muito comum quando trabalhando com computação gráfica que a representação virtual da câmera seja fixa na posição (0,0,0) e que todas as operações relacionadas ao seu posicionamento e outros parâmetros seja na verdade aplicada na cena, de modo que um efeito equivalente seja obtido mantendo a câmera no mesmo local. Embora isso seja a práica mais comum, por fins de simplicidade e para facilitar o entendimento foi optado por mover e aplicar esse tipo de operações no próprio objeto da câmera realmente.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dessa forma, nosso objeto de câmera possui uma posição e 2 vetores principais perpendicular cujo produto vetorial nos indica a direção para a qual a câmera está apontada. Podemos ainda definir o field of view (FOV) da câmera correspondendo ao ângulo $\theta$ de abertura. Na implementação aqui feita foi optado por derivar esses parâmetros a partir do ponto de origem (posição da câmera), ponto central de onde se deseja olhar, ângulo de abertura e aspect ratio.
+
+ ![image](images/camera_so.png)
+<figcaption align = "center"><b>Fig.3 - Câmera com aluns de seus principais atributos</b></figcaption>
+
+### Criando os Raios
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como vimos anteriormente, precisamos gerar um raio que saia da câmera e passe por cada pixel de um plano virtual no qual estamos projetando a imagem. Tendo os parâmetros da câmera já definidos, podemos criar 2 novos vetores ($\overrightarrow{ver}$ e $\overrightarrow{hor}$) como sendo os vetores da câmera normalizados para terem o tamanho de um pixel e sua origem no canto inferior esquerdo do plano da imagem virtual. Desse modo, conseguimos obter as coordenadas de cada pixel da imagem em função deles de forma simples, e assim conseguimos criar o vetor correspondendo ao raio que parte da câmera e chega nesse pixel.
+
+![image](images/camera.png)
+<figcaption align = "center"><b>Fig.4 - Criação de um raio genérico</b></figcaption>
+
+### Outras propriedades da câmera
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nessa implementação a câmera possui algumas outras propriedades ainda. A principal delas é o depth-of-view, ou DOF, que corresponde ao efeito de foco e desfoco causado pela lente da câmera que possui um plano focal próprio. Uma forma de implementá-lo poderia ser realmente simulando a lente da câmera, mas existe uma outra maneira muito mais simples de aproximar esse efeito que é variar de leve a posição da câmera aleatoriamente.     
+
+### Objetos na Cena
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agora que já vimos o funcionamento da câmera virtual e como os raios são criados vamos entender como os objetos na cena com os quais esses raios irão interagir funcionam. Cada objeto possuirá um conjunto de atributos que dependerá do seu formato, então esferas terão uma posição e um raio, enquanto que planos precisão de vetores descrevendo suas direções além da posição. Ainda assim, independentemente do tipo é necessário que todo objeto possua um conjunto de funções definidas:
+* Intereseção: Função que indica se um raio intersepta ou não o objeto, e, caso sim, em que ponto.
+* Normal: Função que retorna a normal entre um raio e o objeto no ponto de interseção.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Consideremos um raio com origem **o** e direção **d**, de forma que ele possa ser representado pela equação r(t) = o+dt, onde **t** é um parâmetro livre.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A esfera é o caso mais simples para ambas as funções, então vamos começar por ela. Para que haja intersecção, é necessário que a equação da esfera $(x-x_0)^2+(y-y_0)^2+(z-z_0)^2 = R^2$ seja valida para algum ponto r(t), o que podemos ver que resulta em uma equação de segundo grau. Assim, podemos diferenciá-la em 3 casos, dependendo se o discriminante:
+* Menor que 0: não há nenhuma interseção.
+* Maior que 0: há 2 interseções (raio passa pelos 2 lados da esfera).
+* Exatamente 0: há apenas uma interseção. 
+
+![image](images/esfera.png)
+<figcaption align = "center"><b>Fig.5 - Interseções com uma esfera</b></figcaption>
+
+Dessa forma, podemos encontrar o valor de t para o qual há interseção no segundo e no terceiro caso. Tendo esse ponto $t_0$ fica muito fácil de encontrar a normal nele, já que ela será simplesmente r($t_0$)-R.
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agora será mostrado mais um exemplo para um plano. Nesse caso, o plano possui uma posição P e 2 vetores perpendiculares u e v, com comprimentos H e W respectivamente, que nos dão as direções do plano. Para verificar se houve uma interseção, primeiramente encontramos o ponto onde o raio intersepta o plano infinito com a mesma normal que o nosso plano ( n = u x v), o que pode ser feito fazendo (r(t)-P) x n = 0. Tendo o valor $t_0$ para o qual isso é válido, podemos converter esse ponto r($t_0$) para um novo sistema de coordenadas centrado em P e com vetores diretores u e v. Fazendo isso, fica fácil verificar se o ponto está dentro de nosso plano finito ou não, bastando ver se ele possui suas componentes em módulo menores que H e W respectivamente. Para encontrar a normal do plano também é muito simples, já que ela é a mesma em todos os pontos, ou seja, n = u x v.
+
+![image](images/plano.png)
+<figcaption align = "center"><b>Fig.6 - Interseções com um plano</b></figcaption>
+
+### Materiais
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nós já sabemos agora o que ocorre quando um raio intersepta em um objeto, mas o que acontece com ele após a interação? Para descobrirmos isso, precisamos definir primeiramente com qual tipo de material ele está interagindo, sendo que nessa implementação possuimos 3 tipos: materiais difusos (refletem a luz de forma difusa), metais (que funcionam como espelhos) e vidro (que refrata uma parte do raio entrando nele e reflete outra). Agora vamos entrar em um pouco mais de detalhes em cada uma delas.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Difusos**: Esses materiais não emitem luz, apenas recebendo a cor de seus entornos e as modulando com sua cor própria. A luz incidente em um objeto desses pode ser refletida ou absorvida,  e  quando ela é refletida sua direção se torna aleatória. Para simular esses efeitos, quando um raio interage com um objeto difuso ele acaba recebendo uma direção refletida randomizada (mais especificamente, sua direção é aleatória dentro de um círculo unitário partindo do ponto de interseção na direção normal) e seu valor é atenuado em função de um parâmetro de atenuação do material. Caso essa reflexão ocorra para o interior do objeto, assumimos que o raio foi absorvido.
+![image](images/difuso.png)
+<figcaption align = "center"><b>Fig.7 - Reflexão em um Material Difuso</b></figcaption>
+
+  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Metálicos**: Por serem mais lisos, os raios refletidos em superfícies metálicas seguem o comportamento conhecido de reflexão, no qual o raio incidente e o raio refletido possuem o mesmo ângulo com a normal. Podemos adicionar ainda um outro fenômeno para que o material tenha alguma difusão. Para isso, fazemos com que o raio refletido seja modificado aleatóriamente em função de um parâmetro de *fuzzyness*, que corresponde ao raio do círculo em torno do raio ideal no qual o novo raio refletido será gerado.
+![image](images/fuzzy.png)
+<figcaption align = "center"><b>Fig.8 - Reflexão em um Material Metálico</b></figcaption>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Dielétricos**: Materiais dielétricos possuem tanto refração quanto reflexão. Para a componente refratada é usada a lei de Snell que nos diz que $\eta sin(\theta) = \eta' sin(\theta')$. Existem casos no entanto para os quais deve haver apenas reflexão, que foram levados em conta ainda. Por fim, foi usada uma aproximação polinomial criada por Christophe Schlick para verificar quando há reflexão e refração dependendo do ângulo de incidência.
+![image](images/dieletrico.png)
+<figcaption align = "center"><b>Fig.9 - Reflexão e Refração em um Material Dielétrico</b></figcaption>
+
+### Juntando Tudo
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tendo todas essas componentes, já é possível criar uma imagem. Para isso, basta simular o raio passando por cada um dos pixels e obter sua cor correspondente. Assim, é necessário verificar se o raio interage cada um dos objetos, selecionar o objeto mais próximo com o qual há interação, gerar um novo raio correspondendo à reflexão, refração ou absorção do objeto e repetir esse processo até que o raio atual não intersepte mais nada. Pode ser definida também uma profundidade máxima de busca. Com isso, nós iniciamos nosso pixel com uma cor vazia, e a cada interação vamos atualizando-a com base no seu valor atual e no efeito que está ocorrendo.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Para que a imagem fique menos quadriculada, foi optado pela realização da obtenção da cor para cada pixel múltiplas vezes, cada uma com um raio levemente diferente ainda dentro do pixel. Usando a média dessas diversas medidas como valor para o pixel torna a imagem mais suave nas transições entre os objetos. Abaixo podemos ver alguns exemplos de imagens geradas pelo programa implementado em C++ aqui.
+
+![alt text](images/exemplo_draw_sphere.png)
+![alt text](images/exemplo_draw_shapes.png)
+![alt text](images/exemplo_draw_material.png)
+![alt text](images/exemplo_draw_config.png)
+
+## 3. CUDA
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ray Tracing é uma técnica que permite paralelização de algumas de suas etapas, o que justifica o uso de linguagens e plataformas que possibilitem isso. CPUs são especialmente boas em processamentos sequenciais de dados, se especializando nisso com sua arquitetura, datapath e hierarquia de cache, mas para tarefas paralelizadas elas acabam não sendo ideais (elas possuem otimização na performance single-thread). Para esse tipo de projeto, GPUs podem ser mais apropriadas por seus designs e arquiteturas serem mais adaptados justamente a processamentos paralelos com seus milhares de "cores". Assim, foram desenvolvidas plataformas focadas no deselvolvimento de aplicações que usem a GPU, como é o exemplo da CUDA da Nvidia. CUDA é uma plataforma de computação paralela e modelo de programação criado para utilizar esse poder das "Unidades de Processamento Gráfico" e será usado nesse projeto com o objetivo de tentar acelerar o Ray Tracer.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Como já temos o código feito em C++, modificá-lo para que ele funcione com CUDA requer poucas modificações. Primeiramente, é necessário definir quais funções e métodos serão executados na GPU (\_\_device\_\_) e quais que serão executados na CPU (\_\_host\_\_). Ao fazer essa divisão, é importante perceber que funções da GPU não podem chamar funções da CPU, e funções da CPU somente podem chamar funções da GPU que são definidas como \_\_global\_\_. Assim, a divisão que foi usada foi tal que a cor dos pixels da imagem seria encontrada na GPU, enquanto que interações como leitura e escrita em arquivos ficariam na CPU. Com isso, classes correspondendo aos raios, cores, vetores, objetos e materiais foram definidas majoritariamente como \_\_device\_\_, já que são usadas para encontrar as cores, enquanto que as classes para leitura dos arquivos de configuração e a orquestração das etapas da CPU foram definidas como \_\_host\_\_. A divisão entre os cores e threads da GPU foi feita para que cada thread de cada core seja responsável por um único pixel, de modo que a imagem inteira é feita em paralelo.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Com isso feito, foi necessário mudar algumas das funções que iriam rodar na GPU mas que não eram compatíveis, sendo a mais relevante a geradora de números aleatórios. A parte disso, a única outra modificação necessária foi quanto à alocação da memória para objetos que precisam ser compartilhados entre GPU e CPU (o principal sendo a matriz representando a imagem). Para isso foi preciso usar o cudaMalloc, que funciona de forma muito semelhante ao malloc comum de c. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Com isso feito, o programa já pode ser executado, e abaixo temos algumas das imagens obtidas.
+![alt text](images/exemplo.png)
+
+## 4. Executando Esse Repositório
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As implementações tanto para C++ puro quanto para CUDA estão nas respectivas pastas ```C++``` e ```CUDA```. Cada uma delas possui seu próprio CMakeFile.txt que pode ser usado para gerar os executáveis. Para isso, crie uma pasta ```build``` dentro do repositório correspondente (```C++``` ou ```CUDA```), e de dentro dela execute o comando ```cmake ../``` (note que é preciso ter o CMake instalado em sua máquina, além do Doxygen, que é uma biblioteca para documentação, e no caso do CUDA, o Toolkit CUDA disponibilizado pela Nvidia com o nvcc para sua compilação). Dependendo do sistema operacional, isso gerará um makefile (Unix) ou um projeto no VisualStudio (Windows), que são então usados para compilar os códigos.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A cena que será renderizada é definida a partir de um arquivo de configuração contendo sua descrição (exemplos desses arquivos se encontram nas pastas ````CUDA/examples``` e ```C++/examples```)  e o nome desse arquivo é passado na linha de comando quando chamando o programa.
+
+## 5. Comparação
 Por fim, o projeto tem como objetivo a comparação da performance da implementação em C++ e em CUDA, tentando identificar os pontos de maior diferença entre os métodos e pontos nos quais ambas as técnicas não apresentam grandes diferenças, e justificar isso com base nos conhecimentos de arquitetura de computadores e do software e hardware utilizado.
 
-## Plano de Trabalho
-Para a realização desse trabalho as seguintes etapas serão necessárias:
+## 6. Passos Futuros
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Esse projeto teve um propósito mais didático e devido ao tempo disponível para sua implementação muitas das etapas não foram feitas da forma mais otimizada. Assim, poderiam ser adaptadas ainda partes como a de verificação de colisões para que não fosse necessário fazer o teste com todos os objetos da cena sempre (segmentando o espaço e verificando sequencialmente os segmentos na ordem com a qual o raio passa, de modo que se uma colisão fosse encontrada não seria necessário testar os segmentos mais distantes). Outro ponto que poderia ser modificado ainda é o da camera, para que ela fique fixa enquanto que aplicações para movimentá-la sejam aplicadas na cena para que o efeito equivalente seja obtido. Por fim, para o Ray Tracer ainda poderiam ser implementadas outras formas geométricas, e existem duas sequências do tutorial que foi seguido ([5] e [6]) que apresentam outras funcionalidades que poderiam ser implementadas (como objetos que emitem luz). 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quanto ao CUDA, poderiam ser testadas outras formas de dividir as tarefas entre a CPU e a GPU, de forma a tentar melhorar a perfomance ainda mais. 
 
----------------------------------------------- Entregável E1 --------------------------------------------------
-  
-* Etapa 1 (1 semana): Estudo do funcionamento de um Ray Tracer
-
->>> Inicialmente será necessário um estudo do funcionamento de um ray tracer e dos algoritmos necessários para sua implementação. A conclusão dessa etapa consiste no entendimento dos algoritmos necessários, suas funções e em como eles podem ser implementados.
-      
-* Etapa 2 (1 semana): Implementação do Ray Tracer em C++
- 
->>> Implementação de um primeiro Ray Tracer utilizando apenas C++. A conclusão dessa etapa consiste em um código em C++ funcional que consiga gerar imagens utilizando Ray Tracing. Esse Ray Tracer seguirá as funcões básicas apresentadas no projeto em [1], mas caso sobre tempo nessa etapa pode ser expandido com novas features (como as apresentadas nos 'Next Steps' de [1]) ou para incluir alguns elementos introduzidos em [5] e [6].
-    
-* Etapa 3 (1 semana): Estudo do Nvidia CUDA
-    
->>> Estudar e entender melhor o funcionamento do CUDA. A conclusão dessa etapa envolve uma compreensão mais aprofundada dos pontos e aplicações nos quais CUDA trará um benefício de desempenho, além de uma introdução a sua sintaxe e uso. Essa etapa também envolverá a configuração do ambiente necessária para a compilação dos códigos em CUDA. Esse Ray Tracer seguirá as funcões básicas apresentadas no projeto em [1] só que usando CUDA Caso sobre tempo nessa etapa pode ser expandido com novas features (como as apresentadas nos 'Next Steps' de [1]) ou para incluir alguns elementos introduzidos em [5] e [6].
-
-* Etapa 4 (1 semana): Implementação do Ray Tracer usando CUDA
-
->>> Implementação de um segundo Ray Tracer utilizando CUDA. A conclusão dessa etapa consiste em um código usando CUDA funcional que consiga gerar imagens utilizando Ray Tracing. 
-  
----------------------------------------------- Entregável E2 --------------------------------------------------
-  
-* Etapa 5 (1 semana): Testes e Comparação de Resultados
-      
->>> Realização de testes de geração de imagens, medindo tempos de execução para que seja possível comparar a performance das diferentes implementações. A conclusão dessa etapa envolverá a geração de gráficos comparativos dos tempos de execução e análises dos principais pontos de diferença entre as implementações, tentando assim justificar os resultados obtidos.
-
-* Etapa 6 (2 semanas): Preparação do Relatório e da Apresentação
-  
->>> Escrita do relatório e preparação do material que será apresentado. A conclusão dessa etapa envolverá a preparação de um relatório delineando o projeto, sua implementação, resultados e conclusões; além de uma apresentação, que poderá ser no formato de slides ou algum outro formato expositivo, delineando os mesmo pontos.
-
-* Extra (5 semanas): Tempo extra
-
->>> Tempo extra que poderá ser usado para complementar as outras etapas caso ocorram imprevistos. Caso "sobre tempo" o projeto pode ser expandido:  
-    * Incluindo novas features nos Ray Tracers implementados;  
-    * Realizando uma outra implementação em Python, por exemplo, para comparar a performance também;
-
-  
----------------------------------------------- Entregável E3 --------------------------------------------------
-  
 ## Resultados Parciais
 Até o entregável 2, já foi implementado o código do ray tracer em C++, faltando para a conclusão do projeto apenas sua adaptação para que ele passe a usar CUDA também. Para a compilação dos códigos, foi utilizado o CMake, que gerará o Makefile automaticamente para nós. Além disso, para a geração de documentação automática está sendo usado o Doxygen, logo ele precisa ser instalado para que o CMake funcione. Com isso feito, basta criar uma pasta build no mesmo local onde está o CMakeFile.txt, e de dentro dela chamar o comando `cmake ../`, que gerará o arquivo que será usado para compilar o código, bastando usar o comando `make` para isso. Assim, teremos um conjunto de executáveis que foram criados para testar diversas funcionalidades, como a renderização de formas diferentes, de materiais diferentes, etc. Exemplos dessas imagens já foram salvos na pasta 'C++/images', e podem ser vistas abaixo. Para que não seja necessário recompilar o código sempre que desejemos renderizar uma cena diferente, foi criado também um arquivo de configuração no qual descrevemos a cena. Assim, o executável 'from_file_test' lê o arquivo 'config.scene' que precisa estar na pasta examples, e gera a imagem renderizada a partir dele.
 
