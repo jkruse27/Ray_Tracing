@@ -1,0 +1,71 @@
+#param = 10
+#unit = esferas
+
+# Nome do arquivo onde salvar a imagem
+filename = ../../images/exemplo.ppm
+
+# ---- Configurações da renderização ----
+# Tipo da camera (deixar como 1)
+camera_type = 1
+
+# Para o C++, log mostra uma barra dinâmica do quanto da imagem já foi processado
+log = 0
+# Número máximo de reflexões a serem consideradas
+max_depth = 50
+# Número de pontos avaliados para cada pixel
+samples_per_pixel = 100
+
+# Formato e resolução da imagem
+aspect_ratio = 1.5
+# Altura e largura em pixels
+altura = 800
+largura = 1200
+# Tamanho na cena do plano virtual da imagem
+viewport_height = 2
+viewport_width = 3.6
+
+# Configurações da camera
+focal_length = 1.0
+origin = (13,2,3)
+
+# Ponto para o qual a camera esta apontada
+lookat = (0,0,0)
+# Eixo vertical do sistema de coordenadas
+vup = (0,1,0)
+# Field of View vertical
+vfov = 20
+# Vetores diretores do plano virtual da imagem
+horizontal = (3.6,0,0)
+vertical = (0,2,0)
+# Parametros para desfoque da imagem
+aperture = 0.1
+focus_dist = 10.0
+
+# Instanciação dos objetos na cena
+# Modelo:
+#   sphere = posicao, raio, tipo_do_material(cor, args)
+#   plano = posicao, u, v, H, W, tipo_do_material(cor, args)
+# tipo_do_material:
+#   opaque(cor)
+#   metal(cor, fator_de_fuzzyness)
+#   glass(cor, indice_de_refracao)
+
+sphere = (0,-1000,0), 1000, opaque((0.5,0.5,0.5))
+
+sphere = (0,1,0), 1.0, glass((1,1,1), 1.5)
+
+sphere = (-4,1,0), 1.0, opaque((0.4,0.2,0.1))
+
+sphere = (4,1,0), 1.0, metal((0.7,0.6,0.5), 0.0)
+
+sphere = (0.0355638298482373,0.2,0.6775492751756674), 0.2, opaque((0.16574953194803438,0.20371621859911135,0.37390667236037756))
+
+sphere = (0.6110712232370975,0.2,1.0323738327904124), 0.2, opaque((0.011043808898945068,0.16079077314735712,0.055318666237848195))
+
+sphere = (0.5523052948716695,0.2,2.148919415361911), 0.2, opaque((0.12289623601171086,0.05469748625689112,0.20164023230118017))
+
+sphere = (1.155484571515449,0.2,0.8865390300406114), 0.2, opaque((0.5949195483670685,0.44696085857972856,0.31719093511670027))
+
+sphere = (1.6382645746423252,0.2,1.1210866205299082), 0.2, opaque((0.27191926131536004,0.009427090941993772,0.02306425394342321))
+
+sphere = (1.2242898207080788,0.2,2.372660453827225), 0.2, opaque((0.7970848024510016,0.04020550348855853,0.6164726276727645))

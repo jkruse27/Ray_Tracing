@@ -1,0 +1,91 @@
+#param = 20
+#unit = esferas
+
+# Nome do arquivo onde salvar a imagem
+filename = ../../images/exemplo.ppm
+
+# ---- Configurações da renderização ----
+# Tipo da camera (deixar como 1)
+camera_type = 1
+
+# Para o C++, log mostra uma barra dinâmica do quanto da imagem já foi processado
+log = 0
+# Número máximo de reflexões a serem consideradas
+max_depth = 50
+# Número de pontos avaliados para cada pixel
+samples_per_pixel = 100
+
+# Formato e resolução da imagem
+aspect_ratio = 1.5
+# Altura e largura em pixels
+altura = 800
+largura = 1200
+# Tamanho na cena do plano virtual da imagem
+viewport_height = 2
+viewport_width = 3.6
+
+# Configurações da camera
+focal_length = 1.0
+origin = (13,2,3)
+
+# Ponto para o qual a camera esta apontada
+lookat = (0,0,0)
+# Eixo vertical do sistema de coordenadas
+vup = (0,1,0)
+# Field of View vertical
+vfov = 20
+# Vetores diretores do plano virtual da imagem
+horizontal = (3.6,0,0)
+vertical = (0,2,0)
+# Parametros para desfoque da imagem
+aperture = 0.1
+focus_dist = 10.0
+
+# Instanciação dos objetos na cena
+# Modelo:
+#   sphere = posicao, raio, tipo_do_material(cor, args)
+#   plano = posicao, u, v, H, W, tipo_do_material(cor, args)
+# tipo_do_material:
+#   opaque(cor)
+#   metal(cor, fator_de_fuzzyness)
+#   glass(cor, indice_de_refracao)
+
+sphere = (0,-1000,0), 1000, opaque((0.5,0.5,0.5))
+
+sphere = (0,1,0), 1.0, glass((1,1,1), 1.5)
+
+sphere = (-4,1,0), 1.0, opaque((0.4,0.2,0.1))
+
+sphere = (4,1,0), 1.0, metal((0.7,0.6,0.5), 0.0)
+
+sphere = (0.6386769897824139,0.2,0.23403371823327637), 0.2, opaque((0.0022974803289839167,0.06989383480180848,0.004804917286471587))
+
+sphere = (0.599702489658702,0.2,1.62962564210232), 0.2, opaque((0.24433455926605258,0.2769136200081139,0.41468363554668736))
+
+sphere = (0.6018579801074162,0.2,2.712487610968866), 0.2, opaque((0.4181843073676865,0.0009498297571325161,0.29312535035866105))
+
+sphere = (0.41946787887902925,0.2,3.294720217958154), 0.2, opaque((0.6189833945878347,0.0670494214667708,0.23222724342310325))
+
+sphere = (1.7752154856462645,0.2,0.33022070215184124), 0.2, metal((0.5885397399215475,0.706670464507608,0.7525706914584215), 0.356113340335584)
+
+sphere = (1.5210224258796718,0.2,1.7837139340783343), 0.2, metal((0.5644876954185882,0.6688127008854857,0.9109246492223282), 0.17301742356114275)
+
+sphere = (1.4501198590802127,0.2,2.7350817200072806), 0.2, opaque((0.3840189021570187,0.07769472791277547,0.4230477829470038))
+
+sphere = (1.6770405667416988,0.2,3.5030457546591522), 0.2, opaque((0.26409718231574697,0.0957338370837351,0.2711365403690377))
+
+sphere = (2.552784318536858,0.2,0.30270256050168654), 0.2, metal((0.5646990218353385,0.7823784906401783,0.6505247422426419), 0.1453789642919634)
+
+sphere = (2.5890219569822994,0.2,1.1607786504426363), 0.2, opaque((0.017294058024678843,0.12128317223758472,0.6366329243503203))
+
+sphere = (2.608511491915559,0.2,2.0731356101644605), 0.2, opaque((0.41535355235604127,0.024461650659661906,0.14425884171142292))
+
+sphere = (2.013860813174037,0.2,3.065111675441044), 0.2, opaque((0.7965396710745203,0.13094632760691097,0.22562686419897926))
+
+sphere = (3.1188548222284416,0.2,0.38046842063679964), 0.2, opaque((0.20984146741818513,0.06050439797670081,0.30187996991460425))
+
+sphere = (3.690519603051677,0.2,1.36622277861618), 0.2, metal((0.5859305084751943,0.7914247991076244,0.8679855305234006), 0.27766547952176596)
+
+sphere = (3.636978247412337,0.2,2.8834210740181856), 0.2, opaque((0.38378085550158186,0.05011366993158935,0.2533360585122944))
+
+sphere = (3.1370914223074724,0.2,3.154447502870883), 0.2, metal((0.6094999605014889,0.6242602550530911,0.8297859529729144), 0.3444655484954967)
