@@ -78,9 +78,10 @@ Dessa forma, podemos encontrar o valor de t para o qual há interseção no segu
 ![image](images/fuzzy.png)
 <p align="center"><b>Fig.8 - Reflexão em um Material Metálico</b></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Dielétricos**: Materiais dielétricos possuem tanto refração quanto reflexão. Para a componente refratada é usada a lei de Snell que nos diz que $\eta sin(\theta) = \eta' sin(\theta')$. Existem casos no entanto para os quais deve haver apenas reflexão, que foram levados em conta ainda. Por fim, foi usada uma aproximação polinomial criada por Christophe Schlick para verificar quando há reflexão e refração dependendo do ângulo de incidência.  
-![image](images/dieletrico.png)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Dielétricos**: Materiais dielétricos possuem tanto refração quanto reflexão. 
+![image](images/dieletrico.png)
 <p align="center"><b>Fig.9 - Reflexão e Refração em um Material Dielétrico</b></p>
+Para a componente refratada é usada a lei de Snell que nos diz que $$\eta sin(\theta) = \eta' sin(\theta')$$. Existem casos no entanto para os quais deve haver apenas reflexão, que foram levados em conta ainda. Por fim, foi usada uma aproximação polinomial criada por Christophe Schlick para verificar quando há reflexão e refração dependendo do ângulo de incidência. 
 
 ### Juntando Tudo
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tendo todas essas componentes, já é possível criar uma imagem. Para isso, basta simular o raio passando por cada um dos pixels e obter sua cor correspondente. Assim, é necessário verificar se o raio interage cada um dos objetos, selecionar o objeto mais próximo com o qual há interação, gerar um novo raio correspondendo à reflexão, refração ou absorção do objeto e repetir esse processo até que o raio atual não intersepte mais nada. Pode ser definida também uma profundidade máxima de busca. Com isso, nós iniciamos nosso pixel com uma cor vazia, e a cada interação vamos atualizando-a com base no seu valor atual e no efeito que está ocorrendo.
