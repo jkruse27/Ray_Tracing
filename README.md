@@ -19,12 +19,12 @@ O presente projeto foi originado no contexto das atividades da disciplina de gra
 ## 2. Ray Tracing
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ray Tracing é um dos métodos que podem ser usados em técnicas de renderização, e ele acaba tendo um trade-off de imagens com maior qualidade, mas com um custo computacional muito maior. Assim, essa técnica geralmente era mais utilizada para renderizações em filmes e imagens, que não exigiam uma excecução muita rápida, mas para outras mídias como jogos, nas quais a taxa de quadros por segundo gerados dinâmicamente é essencial, outros métodos precisavam ser aplicados. Quando estamos renderizando uma imagem, o que nós estamos buscando na verdade é uma projeção da nossa cena 3D em um plano 2D, o que pode ser feito de diversas maneiras dependendo da técnica empregada.
 ![image](images/formando_imagem.png)
-<figcaption align = "center"><b>Fig.1 - Projeção da Cena em um plano</b></figcaption>
+<p align="center"><b>Fig.1 - Projeção da Cena em um plano</b></p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Quando trabalhamos com Ray Tracing, o maior custo computacional inerente à técnica vem justamente do fato dele, para fazer essa projeção, traçar o caminho de um feixe imaginário partindo de um ponto de foco e passando por cada pixel da imagem e calculando a cor visível por ele. Assim, é necessário simular efeitos óticos como a reflexão, refração, dispersão, além de outros efeitos mais complexos como motion blur, depth of field, etc. A vantagem desse método é que, por conta de todos esses efeitos estarem sendo levados em conta para a obtenção da imagem, ela acaba podendo ser mais realista. 
 
  ![image](images/raio_no_pixel.png)
-<figcaption align = "center"><b>Fig.2 - Exemplo de raio</b></figcaption>
+<p align="center"><b>Fig.2 - Exemplo de raio</b></p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Recentemente, uma nova linha de placas lançada pela Nvidia trouxe acelerações em hardware para tarefas relacionadas a Ray Tracing, possibilitando agora seu uso em aplicações mais dinâmicas como jogos.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Em traços gerais, o que o algoritmo faz é simular um raio saindo de um ponto de foco e um pixel até alguma superfície que bloqueie seu caminho, o que dará sua cor. Vale notar que cada superfície possui características próprias, podendo refletir, refratar, dispersar, etc o raio chegando nela, e isso precisa ser levado em conta também. Realizando essa simulação para um conjunto suficientemente grande de raios passando por todos os pixels da imagem e posteriormente usando outros métodos de processamento de imagem para remover possíveis artefatos e aliasing, chegamos em uma imagem final renderizada.  
@@ -35,13 +35,13 @@ O presente projeto foi originado no contexto das atividades da disciplina de gra
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dessa forma, nosso objeto de câmera possui uma posição e 2 vetores principais perpendicular cujo produto vetorial nos indica a direção para a qual a câmera está apontada. Podemos ainda definir o field of view (FOV) da câmera correspondendo ao ângulo $\theta$ de abertura. Na implementação aqui feita foi optado por derivar esses parâmetros a partir do ponto de origem (posição da câmera), ponto central de onde se deseja olhar, ângulo de abertura e aspect ratio.
 
  ![image](images/camera_so.png)
-<figcaption align = "center"><b>Fig.3 - Câmera com aluns de seus principais atributos</b></figcaption>
+<p align="center"><b>Fig.3 - Câmera com alguns de seus principais atributos</b></p>
 
 ### Criando os Raios
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Como vimos anteriormente, precisamos gerar um raio que saia da câmera e passe por cada pixel de um plano virtual no qual estamos projetando a imagem. Tendo os parâmetros da câmera já definidos, podemos criar 2 novos vetores ($\overrightarrow{ver}$ e $\overrightarrow{hor}$) como sendo os vetores da câmera normalizados para terem o tamanho de um pixel e sua origem no canto inferior esquerdo do plano da imagem virtual. Desse modo, conseguimos obter as coordenadas de cada pixel da imagem em função deles de forma simples, e assim conseguimos criar o vetor correspondendo ao raio que parte da câmera e chega nesse pixel.
 
 ![image](images/camera.png)
-<figcaption align = "center"><b>Fig.4 - Criação de um raio genérico</b></figcaption>
+<p align="center"><b>Fig.4 - Criação de um raio genérico</b></p>
 
 ### Outras propriedades da câmera
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nessa implementação a câmera possui algumas outras propriedades ainda. A principal delas é o depth-of-view, ou DOF, que corresponde ao efeito de foco e desfoco causado pela lente da câmera que possui um plano focal próprio. Uma forma de implementá-lo poderia ser realmente simulando a lente da câmera, mas existe uma outra maneira muito mais simples de aproximar esse efeito que é variar de leve a posição da câmera aleatoriamente.     
@@ -58,29 +58,29 @@ O presente projeto foi originado no contexto das atividades da disciplina de gra
 * Exatamente 0: há apenas uma interseção. 
 
 ![image](images/esfera.png)
-<figcaption align = "center"><b>Fig.5 - Interseções com uma esfera</b></figcaption>
+<p align="center"><b>Fig.5 - Interseções com uma esfera</b></p>
 
 Dessa forma, podemos encontrar o valor de t para o qual há interseção no segundo e no terceiro caso. Tendo esse ponto $t_0$ fica muito fácil de encontrar a normal nele, já que ela será simplesmente r($t_0$)-R.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Agora será mostrado mais um exemplo para um plano. Nesse caso, o plano possui uma posição P e 2 vetores perpendiculares u e v, com comprimentos H e W respectivamente, que nos dão as direções do plano. Para verificar se houve uma interseção, primeiramente encontramos o ponto onde o raio intersepta o plano infinito com a mesma normal que o nosso plano ( n = u x v), o que pode ser feito fazendo (r(t)-P) x n = 0. Tendo o valor $t_0$ para o qual isso é válido, podemos converter esse ponto r($t_0$) para um novo sistema de coordenadas centrado em P e com vetores diretores u e v. Fazendo isso, fica fácil verificar se o ponto está dentro de nosso plano finito ou não, bastando ver se ele possui suas componentes em módulo menores que H e W respectivamente. Para encontrar a normal do plano também é muito simples, já que ela é a mesma em todos os pontos, ou seja, n = u x v.
 
 ![image](images/plano.png)
-<figcaption align = "center"><b>Fig.6 - Interseções com um plano</b></figcaption>
+<p align="center"><b>Fig.6 - Interseções com um plano</b></p>
 
 ### Materiais
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nós já sabemos agora o que ocorre quando um raio intersepta em um objeto, mas o que acontece com ele após a interação? Para descobrirmos isso, precisamos definir primeiramente com qual tipo de material ele está interagindo, sendo que nessa implementação possuimos 3 tipos: materiais difusos (refletem a luz de forma difusa), metais (que funcionam como espelhos) e vidro (que refrata uma parte do raio entrando nele e reflete outra). Agora vamos entrar em um pouco mais de detalhes em cada uma delas.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Difusos**: Esses materiais não emitem luz, apenas recebendo a cor de seus entornos e as modulando com sua cor própria. A luz incidente em um objeto desses pode ser refletida ou absorvida,  e  quando ela é refletida sua direção se torna aleatória. Para simular esses efeitos, quando um raio interage com um objeto difuso ele acaba recebendo uma direção refletida randomizada (mais especificamente, sua direção é aleatória dentro de um círculo unitário partindo do ponto de interseção na direção normal) e seu valor é atenuado em função de um parâmetro de atenuação do material. Caso essa reflexão ocorra para o interior do objeto, assumimos que o raio foi absorvido.
 ![image](images/difuso.png)
-<figcaption align = "center"><b>Fig.7 - Reflexão em um Material Difuso</b></figcaption>
+<p align="center"><b>Fig.7 - Reflexão em um Material Difuso</b></p>
 
   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Metálicos**: Por serem mais lisos, os raios refletidos em superfícies metálicas seguem o comportamento conhecido de reflexão, no qual o raio incidente e o raio refletido possuem o mesmo ângulo com a normal. Podemos adicionar ainda um outro fenômeno para que o material tenha alguma difusão. Para isso, fazemos com que o raio refletido seja modificado aleatóriamente em função de um parâmetro de *fuzzyness*, que corresponde ao raio do círculo em torno do raio ideal no qual o novo raio refletido será gerado.
 ![image](images/fuzzy.png)
-<figcaption align = "center"><b>Fig.8 - Reflexão em um Material Metálico</b></figcaption>
+<p align="center"><b>Fig.8 - Reflexão em um Material Metálico</b></p>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Dielétricos**: Materiais dielétricos possuem tanto refração quanto reflexão. Para a componente refratada é usada a lei de Snell que nos diz que $\eta sin(\theta) = \eta' sin(\theta')$. Existem casos no entanto para os quais deve haver apenas reflexão, que foram levados em conta ainda. Por fim, foi usada uma aproximação polinomial criada por Christophe Schlick para verificar quando há reflexão e refração dependendo do ângulo de incidência.
-![image](images/dieletrico.png)
-<figcaption align = "center"><b>Fig.9 - Reflexão e Refração em um Material Dielétrico</b></figcaption>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Materiais Dielétricos**: Materiais dielétricos possuem tanto refração quanto reflexão. Para a componente refratada é usada a lei de Snell que nos diz que $\eta sin(\theta) = \eta' sin(\theta')$. Existem casos no entanto para os quais deve haver apenas reflexão, que foram levados em conta ainda. Por fim, foi usada uma aproximação polinomial criada por Christophe Schlick para verificar quando há reflexão e refração dependendo do ângulo de incidência.  
+![image](images/dieletrico.png)  
+<p align="center"><b>Fig.9 - Reflexão e Refração em um Material Dielétrico</b></p>
 
 ### Juntando Tudo
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tendo todas essas componentes, já é possível criar uma imagem. Para isso, basta simular o raio passando por cada um dos pixels e obter sua cor correspondente. Assim, é necessário verificar se o raio interage cada um dos objetos, selecionar o objeto mais próximo com o qual há interação, gerar um novo raio correspondendo à reflexão, refração ou absorção do objeto e repetir esse processo até que o raio atual não intersepte mais nada. Pode ser definida também uma profundidade máxima de busca. Com isso, nós iniciamos nosso pixel com uma cor vazia, e a cada interação vamos atualizando-a com base no seu valor atual e no efeito que está ocorrendo.
