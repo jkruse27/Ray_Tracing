@@ -34,40 +34,10 @@ set ( COMMON_ALL_CUDA
   includes/utilities.cuh
   )
 
-set ( SOURCE_ONE_WEEKEND_CUDA
-  ${COMMON_ALL_CUDA}
-  examples/draw_sphere.cu
-)
-
-set ( SOURCE_ONE_WEEKEND_CUDA_2
-  ${COMMON_ALL_CUDA}
-  examples/draw_materials.cu
-)
-
-set ( SOURCE_ONE_WEEKEND_CUDA_3
-  ${COMMON_ALL_CUDA}
-  examples/draw_shapes.cu
-)
-
 set ( SOURCE_ONE_WEEKEND_CUDA_4
   ${COMMON_ALL_CUDA}
   examples/draw_config.cu
 )
-
-add_executable(Sphere  ${SOURCE_ONE_WEEKEND_CUDA})
-set_property(TARGET Sphere PROPERTY CUDA_ARCHITECTURES all)
-target_include_directories(Sphere  PRIVATE .)
-target_include_directories(Sphere  PRIVATE ./includes)
-
-add_executable(Materials  ${SOURCE_ONE_WEEKEND_CUDA_2})
-set_property(TARGET Materials PROPERTY CUDA_ARCHITECTURES all)
-target_include_directories(Materials  PRIVATE .)
-target_include_directories(Materials  PRIVATE ./includes)
-
-add_executable(Shapes  ${SOURCE_ONE_WEEKEND_CUDA_3})
-set_property(TARGET Shapes PROPERTY CUDA_ARCHITECTURES all)
-target_include_directories(Shapes  PRIVATE .)
-target_include_directories(Shapes  PRIVATE ./includes)
 
 add_executable(Config  ${SOURCE_ONE_WEEKEND_CUDA_4})
 set_property(TARGET Config PROPERTY CUDA_ARCHITECTURES all)

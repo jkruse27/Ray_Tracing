@@ -1,0 +1,110 @@
+Teste objetos:
+	teste0.scene:
+		CUDA: 438
+		CPP: 51173
+
+	teste1.scene:
+		CUDA: 457
+		CPP: 55496
+
+	teste2.scene:
+		CUDA: 549
+		CPP: 83236
+
+	teste3.scene:
+		CUDA: 545
+		CPP: 114733
+
+	teste4.scene:
+		CUDA: 602
+		CPP: 168045
+
+	teste5.scene:
+		CUDA: 1177
+		CPP: 339067
+
+	teste6.scene:
+		CUDA: 2997
+		CPP: 629421
+
+
+Teste resolucao:
+	teste0.scene:
+		CUDA: 71
+		CPP: 3617
+
+	teste1.scene:
+		CUDA: 139
+		CPP: 9781
+
+	teste2.scene:
+		CUDA: 260
+		CPP: 22082
+
+	teste3.scene:
+		CUDA: 466
+		CPP: 38761
+
+	teste4.scene:
+		CUDA: 1042
+		CPP: 87417
+
+	teste5.scene:
+		CUDA: 2373
+		CPP: 194921
+
+	teste6.scene:
+		CUDA: 4232
+		CPP: 341254
+
+	teste7.scene:
+		CUDA: 9555
+		CPP: 765919
+
+
+Teste samples_per_pixel:
+	teste0.scene:
+		CUDA: 19
+		CPP: 1032
+
+	teste1.scene:
+		CUDA: 20
+		CPP: 943
+
+	teste10.scene:
+		CUDA: 2268
+		CPP: 186563
+
+	teste2.scene:
+		CUDA: 40
+		CPP: 2331
+
+	teste3.scene:
+		CUDA: 69
+		CPP: 4647
+
+	teste4.scene:
+		CUDA: 139
+		CPP: 9325
+
+	teste5.scene:
+		CUDA: 256
+		CPP: 19227
+
+	teste6.scene:
+		CUDA: 475
+		CPP: 37348
+
+	teste7.scene:
+		CUDA: 788
+		CPP: 57676
+
+	teste8.scene:
+		CUDA: 1291
+		CPP: 92821
+
+	teste9.scene:
+		CUDA: 1911
+		CPP: 139513
+
+
