@@ -21,6 +21,7 @@ typedef struct SceneParams {
         int samples_per_pixel;
         int max_depth;
         int log;
+        color background;
         float t_min;
         float t_max;
         int TX;
@@ -102,6 +103,7 @@ __host__ inline SceneParams read_scene_from(const char* config_file){
     ret.samples_per_pixel = 500;
     ret.t_min = 0.001;
     ret.t_max = infinity;
+    ret.background = color(0,0,0);
 
     std::string filename = "../images/exemplo_draw_config.ppm";
     config.aspect_ratio = 16/9;
@@ -149,6 +151,8 @@ __host__ inline SceneParams read_scene_from(const char* config_file){
             config.lookat = get_vec3(text);
         else if(text.find("vup") != std::string::npos)
             config.vup = get_vec3(text);
+        else if(text.find("background") != std::string::npos)
+            ret.background = get_color(text);
         else if(text.find("vfov") != std::string::npos)
             config.vfov = get_float(text);
 		else if(text.find("viewport_height") != std::string::npos)
@@ -307,6 +311,11 @@ __host__ inline SphereParams get_sphere_params(std::string text){
         params.material = GLASS;
         params.obj_color = color(r,g,b);
         params.index = index;
+    }else if(text.find("light") != std::string::npos){
+        double r, g, b;
+        ss >> trash >> r >> g >> b;
+        params.material = EMISSIVE;
+        params.obj_color = color(r,g,b);
     }
 
     return params;
@@ -351,6 +360,11 @@ __host__ inline PlaneParams get_plane_params(std::string text){
         params.material = GLASS;
         params.obj_color = color(r,g,b);
         params.index = index;
+    }else if(text.find("light") != std::string::npos){
+        double r, g, b;
+        ss >> trash >> r >> g >> b;
+        params.material = EMISSIVE;
+        params.obj_color = color(r,g,b);
     }
 
     return params;
@@ -363,6 +377,8 @@ __global__ inline void get_sphere(Shape** sphere, SphereParams params){
         *sphere = new Sphere(params.center, params.radius, new Opaque(params.obj_color));
     else if(params.material==GLASS)
         *sphere = new Sphere(params.center, params.radius, new Glass(params.obj_color, params.index));
+    else if(params.material==EMISSIVE)
+        *sphere = new Sphere(params.center, params.radius, new Light(params.obj_color));
 }
 
 __global__ inline void get_plane(Shape** plane, PlaneParams params){
@@ -372,6 +388,8 @@ __global__ inline void get_plane(Shape** plane, PlaneParams params){
         *plane = new Plane(params.center, params.u, params.v, params.width, params.height, new Opaque(params.obj_color));
     else if(params.material == GLASS)
         *plane = new Plane(params.center, params.u, params.v, params.width, params.height, new Glass(params.obj_color, params.index));    
+    else if(params.material == EMISSIVE)
+        *plane = new Plane(params.center, params.u, params.v, params.width, params.height, new Light(params.obj_color));
 }
 
 __global__ inline void get_camera(Camera** camera, Configs config, int camera_type){

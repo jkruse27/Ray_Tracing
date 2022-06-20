@@ -26,7 +26,6 @@ set ( COMMON_ALL_CUDA
   includes/renderer.cuh
   includes/ray.cuh
   includes/vec3.cuh
-  includes/cuda_parameters.cuh
   includes/color.cuh
   includes/config_reader.cuh
   includes/material.cuh

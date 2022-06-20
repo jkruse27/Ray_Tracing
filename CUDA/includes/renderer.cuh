@@ -20,9 +20,25 @@ class Renderer {
         std::shared_ptr<Imagem> render(SceneParams params);
 };
 
+__device__ color final_color(color* a, int n_a, color* e, int n_e){
+    color composed_color = e[n_e-1];
+
+    for(int i = n_a-1; i >= 0; i--)
+        composed_color = e[i] + a[i]*composed_color;
+    
+    return composed_color;
+}
+
 __device__ color ray_color(const ray& r, SceneParams *params, curandState curand_St){
     ray cur_ray = r;
-    color cur_attenuation = color(1.0f,1.0f,1.0f);
+    //color cur_attenuation = color(1.0f,1.0f,1.0f);
+
+    //novo
+    color cur_attenuation[50];
+    color emissions[50];
+    int n_a = 0;
+    int n_e = 0;
+    // novo
 
     bool any_hit = false;
     float min_t = 0;
@@ -53,19 +69,37 @@ __device__ color ray_color(const ray& r, SceneParams *params, curandState curand
 
             ray scattered;
             color attenuation;
+            color emitted = closest_hit->obj_material->emitted();
+
+            //novo
+            emissions[params->max_depth-j] = emitted;
+            n_e++; 
+            //novo
 
             if (closest_hit->obj_material->scatter(cur_ray, n, p, attenuation, scattered, &curand_St)){
-                cur_attenuation *= attenuation;
+                //cur_attenuation *= attenuation;
+                //novo
+                emissions[params->max_depth-j] = emitted;
+                cur_attenuation[params->max_depth-j] = attenuation;
+                n_a++;
+                n_e++;
+                //novo
                 cur_ray = scattered;
             }
-            else
-                return color(0,0,0);
+            else{
+                //novo
+                return final_color(cur_attenuation, n_a, emissions, n_e);
+                //novo               
+                //return emitted;
+            }
         }
         else{
-            vec3 unit_direction = unit_vector(r.direction());
-            auto t = 0.5f*(unit_direction.y() + 1.0f);
-            color c = (1.0f-t)*color(1.0f, 1.0f, 1.0f) + t*color(0.5f, 0.7f, 1.0f);
-            return cur_attenuation*c;
+            //novo
+            emissions[params->max_depth-j] = params->background;
+            n_e++;
+            return final_color(cur_attenuation, n_a, emissions, n_e);
+            //novo
+            //return cur_attenuation*params->background;
         }
     }
 

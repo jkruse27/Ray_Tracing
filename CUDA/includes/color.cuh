@@ -95,6 +95,14 @@ __host__ __device__ inline color operator+(const color &u, const color &v) {
     return color(u.e[0] + v.e[0], u.e[1] + v.e[1], u.e[2] + v.e[2]);
 }
 
+__host__ __device__ inline bool operator==(const color &u, const color &v) {
+    return u.e[0] == v.e[0] && u.e[1] == v.e[1] && u.e[2] == v.e[2];
+}
+
+__host__ __device__ inline bool operator!=(const color &u, const color &v) {
+    return u.e[0] != v.e[0] || u.e[1] != v.e[1] || u.e[2] != v.e[2];
+}
+
 __host__ __device__ inline color operator-(const color &u, const color &v) {
     return color(u.e[0] - v.e[0], u.e[1] - v.e[1], u.e[2] - v.e[2]);
 }

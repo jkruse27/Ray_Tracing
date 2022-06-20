@@ -1,3 +1,6 @@
+#param = 5
+#unit = esferas
+
 # Nome do arquivo onde salvar a imagem
 filename = ../../images/exemplo.ppm
 
@@ -6,27 +9,30 @@ filename = ../../images/exemplo.ppm
 camera_type = 1
 
 # Para o C++, log mostra uma barra dinâmica do quanto da imagem já foi processado
-log = 1
+log = 0
 # Número máximo de reflexões a serem consideradas
 max_depth = 50
 # Número de pontos avaliados para cada pixel
-samples_per_pixel = 100
+samples_per_pixel = 500
 
 # Formato e resolução da imagem
-aspect_ratio = 1.8
+aspect_ratio = 1.5
 # Altura e largura em pixels
-altura = 1080
-largura = 1920
+#altura = 800
+#largura = 1200
+altura = 200
+largura = 300
 # Tamanho na cena do plano virtual da imagem
 viewport_height = 2
 viewport_width = 3.6
+background = (0,0,0)
 
 # Configurações da camera
 focal_length = 1.0
-origin = (3,3,2)
+origin = (13,2,3)
 
 # Ponto para o qual a camera esta apontada
-lookat = (0,0,-1)
+lookat = (0,0,0)
 # Eixo vertical do sistema de coordenadas
 vup = (0,1,0)
 # Field of View vertical
@@ -35,8 +41,8 @@ vfov = 20
 horizontal = (3.6,0,0)
 vertical = (0,2,0)
 # Parametros para desfoque da imagem
-aperture = 2.0
-focus_dist = 5.2
+aperture = 0.1
+focus_dist = 10.0
 
 # Instanciação dos objetos na cena
 # Modelo:
@@ -47,8 +53,12 @@ focus_dist = 5.2
 #   metal(cor, fator_de_fuzzyness)
 #   glass(cor, indice_de_refracao)
 
-sphere = (0.0,-100.5,-1.0), 100.0, opaque((0.8, 0.8, 0.0))
-sphere = (0.0,0.0,-1.0), 0.5, opaque(0.1, 0.2, 0.5)
-sphere = (-1.0,0.0,-1.0), -0.45, glass((1,1,1), 1.5)
-sphere = (-1.0,0.0,-1.0), 0.5, glass((1,1,1), 1.5)
-sphere = (1.0,0.0,-1.0), 0.5, metal((0.8,0.6,0.2), 0.0)
+sphere = (0,-1000,0), 1000, opaque((0.5,0.5,0.5))
+
+plane = (0,5,0), (0,0,1), (1,0,0), 15, 15, light((1,1,1))
+
+sphere = (4,1,0), 1.0, opaque((0.4,0.2,0.1))
+
+sphere = (0,1,0), 1.0, metal((0.7,0.6,0.5), 0.0)
+
+sphere = (-1.0,0.7,2), 0.2, opaque((0.021568085292829362,0.18471339189222905,0.5006603162011337))

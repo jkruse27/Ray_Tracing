@@ -11,13 +11,18 @@
 typedef enum MATERIALS {
     OPAQUE,
     METAL,
-    GLASS
+    GLASS,
+    EMISSIVE
 } MATERIALS;
 
 class Material {
     public:
         color albedo;
     public:
+        __device__ virtual color emitted() const {
+            return color(0,0,0);
+        }
+
         __device__ virtual bool scatter(
             const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered, curandState *curand_States
         ) = 0;
@@ -55,6 +60,24 @@ class Glass : public Material {
     
     private:
         __device__ static float reflectance(float cosine, float ref_idx);
+};
+
+class Light : public Material  {
+    public:
+        color emit;
+
+    public:
+        __device__ inline Light(color a) : emit(a) {}
+
+       __device__ inline bool scatter(
+            const ray& r_in, vec3 normal, point3 p, color& attenuation, ray& scattered, curandState *curand_States
+        ){
+            return false;
+        }
+
+        __device__ inline color emitted() const{
+            return emit;
+        }
 };
 
 __device__ inline Opaque::Opaque(color alb){
